@@ -1,0 +1,35 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=infraops
+      - DB_POSTGRESDB_USER=infraops
+      - DB_POSTGRESDB_PASSWORD=infraops_dev_password
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=infraops
+      - POSTGRES_USER=infraops
+      - POSTGRES_PASSWORD=infraops_dev_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./audit-schema/postgres.sql:/docker-entrypoint-initdb.d/001-audit-schema.sql:ro
+
+volumes:
+  n8n_data:
+  postgres_data:
