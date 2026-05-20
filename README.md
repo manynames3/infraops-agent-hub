@@ -10,6 +10,8 @@ This repository is intentionally safe by default. Every integration is mocked, e
 
 The MVP shows a safe incident path: webhook alert intake, sample context loading, mocked agent reasoning, an approval gate, and placeholder outputs for GitHub, Postgres, and Slack. It is importable into n8n without real credentials.
 
+The sales landing page is available at `index.html` and is written for on-call SRE and platform teams evaluating safer incident triage.
+
 ![local demo output](screenshots/local-demo-output.svg)
 
 Run the local demo:
@@ -58,6 +60,8 @@ Not included yet:
 
 ```text
 .
+|-- assets/
+|   `-- landing.css
 |-- audit-schema/
 |   `-- postgres.sql
 |-- docs/
@@ -95,6 +99,7 @@ Not included yet:
 |-- scripts/
 |-- config.example.env
 |-- docker-compose.yml
+|-- index.html
 |-- Makefile
 `-- README.md
 ```
