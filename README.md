@@ -1,8 +1,18 @@
 # InfraOps Agent Hub
 
+[Live landing page](https://infraops-agent-hub.pages.dev/) · [Hiring manager demo guide](docs/hiring-manager-demo.md) · [Local development](docs/local-development.md) · [Real integration path](docs/real-integration-path.md)
+
 InfraOps Agent Hub is a local-first MVP scaffold for an AI-assisted infrastructure operations console. It shows how alerts, logs, prompts, approval gates, runbooks, and audit records can fit together without making live AWS, Slack, GitHub, or LLM calls.
 
 This repository is intentionally safe by default. Every integration is mocked, every production-impacting action requires human approval, and all sample workflows are designed for local demonstration only.
+
+## What To Review First
+
+- [Live sales landing page](https://infraops-agent-hub.pages.dev/): buyer-facing positioning for on-call SRE and platform teams.
+- [Importable n8n workflow](n8n/workflows/incident-triage-workflow.example.json): credential-free demo workflow with webhook, triage, approval, GitHub, Postgres, and Slack placeholders.
+- [Runnable local demo](scripts/run-local-demo.sh): reads the InvoiceBridge 5xx sample incident and writes one local Postgres audit event.
+- [Audit schema](audit-schema/postgres.sql): approval-aware incident audit model.
+- [Real integration path](docs/real-integration-path.md): least-privilege plan for AWS, GitHub, Slack, Postgres, and LLM providers.
 
 ## Demo Preview
 
@@ -10,7 +20,7 @@ This repository is intentionally safe by default. Every integration is mocked, e
 
 The MVP shows a safe incident path: webhook alert intake, sample context loading, mocked agent reasoning, an approval gate, and placeholder outputs for GitHub, Postgres, and Slack. It is importable into n8n without real credentials.
 
-The sales landing page is available at `index.html` and is written for on-call SRE and platform teams evaluating safer incident triage.
+The sales landing page is deployed at https://infraops-agent-hub.pages.dev/ and lives in `index.html`.
 
 ![local demo output](screenshots/local-demo-output.svg)
 
