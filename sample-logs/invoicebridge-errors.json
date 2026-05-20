@@ -1,0 +1,28 @@
+{
+  "service": "invoicebridge-api",
+  "environment": "prod",
+  "region": "us-east-1",
+  "logs": [
+    {
+      "timestamp": "2026-05-20T14:06:14Z",
+      "level": "ERROR",
+      "message": "invoice validation latency exceeded threshold",
+      "request_id": "req_1001",
+      "status_code": 500
+    },
+    {
+      "timestamp": "2026-05-20T14:06:42Z",
+      "level": "ERROR",
+      "message": "downstream validation latency exceeded threshold",
+      "request_id": "req_1002",
+      "status_code": 502
+    },
+    {
+      "timestamp": "2026-05-20T14:07:05Z",
+      "level": "WARN",
+      "message": "database connection pool utilization elevated",
+      "request_id": "req_1003",
+      "status_code": 200
+    }
+  ]
+}
