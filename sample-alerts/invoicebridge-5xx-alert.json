@@ -1,0 +1,12 @@
+{
+  "incident_id": "INC-2026-001",
+  "service": "invoicebridge-api",
+  "environment": "prod",
+  "region": "us-east-1",
+  "alert_type": "HIGH_5XX_RATE",
+  "metric": "5xx_error_rate",
+  "current_value": "8.7%",
+  "threshold": "2%",
+  "started_at": "2026-05-20T14:06:00Z",
+  "source": "cloudwatch"
+}
