@@ -15,8 +15,8 @@
       .node-strong { fill: #edf7ff; stroke: #60a5fa; stroke-width: 2; }
       .node-safe { fill: #f0fdf4; stroke: #4ade80; stroke-width: 2; }
       .node-warn { fill: #fff7ed; stroke: #fb923c; stroke-width: 2; }
-      .label { font-family: Inter, Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #1f2937; }
-      .sub { font-family: Inter, Arial, sans-serif; font-size: 12px; fill: #667085; }
+      .label { font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #1f2937; }
+      .sub { font-family: Inter, Arial, sans-serif; font-size: 14px; fill: #667085; }
       .link { stroke: #667085; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
     </style>
   </defs>

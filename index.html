@@ -8,6 +8,7 @@
       name="description"
       content="InfraOps Agent Hub helps on-call SRE and platform teams turn cloud alerts into evidence-backed first-response packets with approval-gated next steps."
     >
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/landing.css">
   </head>
   <body>
@@ -26,7 +27,6 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-overlay"></div>
         <div class="hero-content">
           <p class="eyebrow">For on-call SRE and platform teams</p>
           <h1 id="hero-title">Stop losing incident time to context hunting.</h1>
@@ -42,6 +42,14 @@
             Clear promise: this is triage and handoff first. Production-impacting actions stay blocked until a human approves them.
           </p>
         </div>
+        <figure class="hero-visual" aria-label="Mock incident workflow preview">
+          <div class="hero-visual-header">
+            <span>Mock incident flow</span>
+            <span>Local demo</span>
+          </div>
+          <img src="screenshots/n8n-workflow-preview.svg" alt="Credential-free n8n demo workflow showing webhook, alert context, logs, runbook lookup, AI placeholders, approval gate, audit insert, and Slack summary">
+          <figcaption>Alert context becomes an evidence-backed first-response packet before any production-impacting action can proceed.</figcaption>
+        </figure>
       </section>
 
       <section class="section problem" id="problem" aria-labelledby="problem-title">
@@ -91,7 +99,12 @@
               <li><strong>Hand off safely.</strong> The plan separates read-only checks from approval-required actions.</li>
             </ol>
           </div>
-          <figure class="product-figure">
+          <figure class="product-figure workflow-preview">
+            <div class="preview-tabs" aria-label="Workflow source options">
+              <span class="preview-tab is-active">Visual workflow</span>
+              <a class="preview-tab" href="n8n/workflows/incident-triage-workflow.example.json">n8n JSON</a>
+              <a class="preview-tab" href="docker-compose.yml">Docker Compose</a>
+            </div>
             <img src="screenshots/n8n-workflow-preview.svg" alt="Workflow preview showing webhook, context loading, AI placeholders, approval gate, audit, and Slack summary placeholders">
             <figcaption>Evaluation build: importable n8n workflow with credential-free integration placeholders.</figcaption>
           </figure>
@@ -103,27 +116,37 @@
           <p class="eyebrow">Operational outcomes</p>
           <h2 id="benefits-title">Less chaos during incidents. Better proof afterward.</h2>
         </div>
-        <div class="benefit-grid">
-          <article>
-            <h3>Cut triage drift</h3>
-            <p>Keep alert facts, sampled logs, release correlation, and runbook matches together so responders argue less about what happened.</p>
-          </article>
-          <article>
-            <h3>Reduce unsafe automation</h3>
-            <p>Classify actions as read-only, approval-required, or blocked before anyone treats a recommendation like a command.</p>
-          </article>
-          <article>
-            <h3>Improve handoffs</h3>
-            <p>Give the next engineer a short, evidence-backed incident summary instead of a long Slack thread.</p>
-          </article>
-          <article>
-            <h3>Make audits easier</h3>
-            <p>Write incident evidence, recommended actions, and approval state into Postgres while the incident is still fresh.</p>
-          </article>
-          <article>
-            <h3>Protect runbook discipline</h3>
-            <p>Ground next steps in approved runbooks and make unsupported actions visible before they become production changes.</p>
-          </article>
+        <div class="benefit-groups">
+          <div class="benefit-group">
+            <h3 class="benefit-group-title">During the incident</h3>
+            <div class="benefit-grid benefit-grid-three">
+              <article>
+                <h3>Cut triage drift</h3>
+                <p>Keep alert facts, sampled logs, release correlation, and runbook matches together so responders argue less about what happened.</p>
+              </article>
+              <article>
+                <h3>Reduce unsafe automation</h3>
+                <p>Classify actions as read-only, approval-required, or blocked before anyone treats a recommendation like a command.</p>
+              </article>
+              <article>
+                <h3>Protect runbook discipline</h3>
+                <p>Ground next steps in approved runbooks and make unsupported actions visible before they become production changes.</p>
+              </article>
+            </div>
+          </div>
+          <div class="benefit-group">
+            <h3 class="benefit-group-title">Post-incident</h3>
+            <div class="benefit-grid benefit-grid-two">
+              <article>
+                <h3>Improve handoffs</h3>
+                <p>Give the next engineer a short, evidence-backed incident summary instead of a long Slack thread.</p>
+              </article>
+              <article>
+                <h3>Make audits easier</h3>
+                <p>Write incident evidence, recommended actions, and approval state into Postgres while the incident is still fresh.</p>
+              </article>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -235,10 +258,13 @@
           </p>
           <div class="access-actions">
             <a
-              class="button button-primary"
+              class="button button-primary button-github"
               href="https://github.com/manynames3/infraops-agent-hub/issues/new?title=Request%20access%20to%20InfraOps%20Agent%20Hub&amp;body=Team%20size%3A%0ACloud%20stack%3A%0AIncident%20pain%20to%20solve%3A%0AWhat%20you%20want%20to%20see%20in%20a%20demo%3A"
             >
-              Request walkthrough
+              <svg class="button-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 0.2a8 8 0 0 0-2.5 15.6c0.4 0.1 0.5-0.2 0.5-0.4v-1.4c-2.1 0.5-2.5-0.9-2.5-0.9-0.3-0.8-0.8-1-0.8-1-0.7-0.5 0.1-0.5 0.1-0.5 0.7 0.1 1.1 0.8 1.1 0.8 0.7 1.1 1.7 0.8 2.1 0.6 0.1-0.5 0.3-0.8 0.5-1-1.7-0.2-3.4-0.8-3.4-3.6 0-0.8 0.3-1.5 0.8-2-0.1-0.2-0.3-1 0.1-2 0 0 0.6-0.2 2.1 0.8a7.1 7.1 0 0 1 3.8 0c1.4-1 2.1-0.8 2.1-0.8 0.4 1 0.2 1.8 0.1 2 0.5 0.6 0.8 1.2 0.8 2 0 2.8-1.7 3.4-3.4 3.6 0.3 0.2 0.5 0.7 0.5 1.4v2c0 0.2 0.1 0.5 0.5 0.4A8 8 0 0 0 8 0.2Z"/>
+              </svg>
+              Open Walkthrough Request on GitHub
             </a>
             <a class="button button-secondary" href="docs/real-integration-path.md">Review integration path</a>
           </div>

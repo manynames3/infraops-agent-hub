@@ -12,8 +12,8 @@
     <style>
       .table { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
       .head { fill: #e0f2fe; }
-      .title { font-family: Inter, Arial, sans-serif; font-size: 17px; font-weight: 700; fill: #172033; }
-      .row { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #475569; }
+      .title { font-family: Inter, Arial, sans-serif; font-size: 20px; font-weight: 700; fill: #172033; }
+      .row { font-family: Menlo, Consolas, monospace; font-size: 15px; fill: #475569; }
       .line { stroke: #64748b; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
     </style>
   </defs>
