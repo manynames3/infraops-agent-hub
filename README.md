@@ -43,7 +43,9 @@ Not included yet:
 |-- docs/
 |   |-- architecture.md
 |   |-- audit-logging.md
+|   |-- demo-script.md
 |   |-- deployment.md
+|   |-- hiring-manager-demo.md
 |   |-- integration-placeholders.md
 |   |-- local-development.md
 |   |-- real-integration-path.md
@@ -136,6 +138,10 @@ Apply the audit schema to local Postgres:
 ```bash
 DATABASE_URL=postgres://infraops:local_infraops_password_do_not_use_in_prod@localhost:5432/infraops_hub ./scripts/apply-audit-schema-local.sh
 ```
+
+## Portfolio Demo
+
+For an interview-ready walkthrough, use `docs/hiring-manager-demo.md`. It includes the demo checklist, two-minute script, resume bullets, architecture explanation, mocked-versus-real boundary, and productionization path.
 
 ## Product Concept
 
