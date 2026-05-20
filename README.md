@@ -61,6 +61,7 @@ Not included yet:
 |   |-- README.md
 |   |-- approval-gate.md
 |   |-- ecs-cpu-saturation.md
+|   |-- high-5xx-error-rate.md
 |   |-- incident-triage.md
 |   |-- post-incident-review.md
 |   `-- rds-storage-pressure.md
@@ -106,6 +107,21 @@ Run a local mock triage without n8n:
 ```bash
 ./scripts/mock-triage.sh sample-alerts/cloudwatch-high-cpu.json
 ```
+
+Run the smallest local incident demo:
+
+```bash
+./scripts/bootstrap-local.sh
+./scripts/run-local-demo.sh
+```
+
+The demo reads:
+
+- `sample-alerts/invoicebridge-5xx-alert.json`
+- `sample-logs/invoicebridge-errors.json`
+- `runbooks/high-5xx-error-rate.md`
+
+It then produces deterministic mocked outputs for triage, release correlation, runbook lookup, next-step planning, and documentation. The script inserts one `infraops_audit.audit_events` record into local Postgres and prints the final incident summary. It refuses non-local database URLs and does not call real AWS, GitHub, Slack, or LLM APIs.
 
 Validate the scaffold:
 
@@ -178,6 +194,7 @@ All scripts use `set -euo pipefail` and are scoped to local development.
 - `scripts/bootstrap-local.sh`: Creates `.env` from the example if needed and starts local services.
 - `scripts/validate-scaffold.sh`: Validates JSON, shell syntax, compose config, and obvious secret patterns.
 - `scripts/mock-triage.sh`: Produces a deterministic mock triage response from a sample alert.
+- `scripts/run-local-demo.sh`: Runs the InvoiceBridge 5xx mock incident demo and writes one local audit event.
 - `scripts/approval-gate.sh`: Demonstrates blocking production-impacting actions without human approval.
 - `scripts/apply-audit-schema-local.sh`: Applies the schema only to a local Postgres URL.
 

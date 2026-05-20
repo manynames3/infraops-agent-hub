@@ -1,0 +1,79 @@
+{
+  "service": "invoicebridge-api",
+  "environment": "staging",
+  "time_window": {
+    "start": "2026-05-20T13:55:00Z",
+    "end": "2026-05-20T14:15:00Z"
+  },
+  "release_events": [
+    {
+      "timestamp": "2026-05-20T13:58:22Z",
+      "release": "invoicebridge-api@2026.05.20.3",
+      "commit": "mock-7f3a91c",
+      "actor": "mock-deployer",
+      "change_summary": "Updated invoice PDF renderer timeout and webhook retry handling."
+    }
+  ],
+  "entries": [
+    {
+      "timestamp": "2026-05-20T13:56:04Z",
+      "level": "info",
+      "request_id": "req-inv-1001",
+      "route": "/v1/invoices/render",
+      "status": 200,
+      "latency_ms": 312,
+      "release": "invoicebridge-api@2026.05.20.2",
+      "message": "Invoice render completed."
+    },
+    {
+      "timestamp": "2026-05-20T14:01:17Z",
+      "level": "error",
+      "request_id": "req-inv-1038",
+      "route": "/v1/invoices/render",
+      "status": 502,
+      "latency_ms": 3024,
+      "release": "invoicebridge-api@2026.05.20.3",
+      "message": "Renderer upstream timed out while creating PDF."
+    },
+    {
+      "timestamp": "2026-05-20T14:03:41Z",
+      "level": "error",
+      "request_id": "req-inv-1075",
+      "route": "/v1/invoices/render",
+      "status": 504,
+      "latency_ms": 5001,
+      "release": "invoicebridge-api@2026.05.20.3",
+      "message": "Gateway timeout waiting for invoice-renderer."
+    },
+    {
+      "timestamp": "2026-05-20T14:05:09Z",
+      "level": "error",
+      "request_id": "req-inv-1102",
+      "route": "/v1/webhooks/deliver",
+      "status": 500,
+      "latency_ms": 1198,
+      "release": "invoicebridge-api@2026.05.20.3",
+      "message": "Webhook retry worker exhausted retry budget."
+    },
+    {
+      "timestamp": "2026-05-20T14:08:55Z",
+      "level": "error",
+      "request_id": "req-inv-1164",
+      "route": "/v1/invoices/render",
+      "status": 502,
+      "latency_ms": 3142,
+      "release": "invoicebridge-api@2026.05.20.3",
+      "message": "Renderer upstream timed out while creating PDF."
+    },
+    {
+      "timestamp": "2026-05-20T14:12:38Z",
+      "level": "warn",
+      "request_id": "req-inv-1199",
+      "route": "/v1/invoices/render",
+      "status": 429,
+      "latency_ms": 85,
+      "release": "invoicebridge-api@2026.05.20.3",
+      "message": "Local mock rate limiter engaged for renderer queue."
+    }
+  ]
+}

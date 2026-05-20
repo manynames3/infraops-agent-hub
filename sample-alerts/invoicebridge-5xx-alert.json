@@ -1,0 +1,27 @@
+{
+  "alert_id": "alert-2026-05-20-invoicebridge-5xx",
+  "incident_id": "inc-invoicebridge-2026-05-20-001",
+  "source": "mock-cloudwatch",
+  "provider": "aws",
+  "environment": "staging",
+  "service": "invoicebridge-api",
+  "resource": "alb/target-group/invoicebridge-api",
+  "severity": "sev2",
+  "status": "firing",
+  "started_at": "2026-05-20T14:05:00Z",
+  "summary": "HTTP 5xx error rate for invoicebridge-api exceeded 8 percent for 10 minutes.",
+  "metric_context": {
+    "metric_name": "HTTPCode_Target_5XX_Count",
+    "error_rate_percent": 8.7,
+    "threshold_percent": 5,
+    "request_count": 18420,
+    "error_count": 1603,
+    "window": "10m"
+  },
+  "labels": {
+    "team": "platform-apps",
+    "region": "us-east-1",
+    "runbook": "runbooks/high-5xx-error-rate.md",
+    "customer_impact": "Invoice PDF generation and webhook delivery are intermittently failing."
+  }
+}
