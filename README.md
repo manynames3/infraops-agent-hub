@@ -43,6 +43,7 @@ Not included yet:
 |-- docs/
 |   |-- architecture.md
 |   |-- audit-logging.md
+|   |-- deployment.md
 |   |-- integration-placeholders.md
 |   |-- local-development.md
 |   |-- real-integration-path.md
