@@ -45,6 +45,7 @@ Not included yet:
 |   |-- audit-logging.md
 |   |-- integration-placeholders.md
 |   |-- local-development.md
+|   |-- real-integration-path.md
 |   |-- roadmap.md
 |   `-- safety-and-approval-model.md
 |-- n8n/

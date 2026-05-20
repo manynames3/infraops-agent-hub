@@ -2,6 +2,8 @@
 
 This MVP uses placeholders only. Future integrations should be added behind feature flags and should default to disabled.
 
+For the concrete implementation path, see `docs/real-integration-path.md`.
+
 ## AWS
 
 Current state:
