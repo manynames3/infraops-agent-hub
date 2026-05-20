@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">InfraOps Agent Hub local demo terminal output</title>
+  <desc id="desc">Static preview of the local mock incident demo summary.</desc>
+  <rect width="1200" height="675" fill="#111827"/>
+  <rect x="38" y="38" width="1124" height="599" rx="18" fill="#0b1220" stroke="#243244"/>
+  <circle cx="76" cy="72" r="7" fill="#ef4444"/>
+  <circle cx="100" cy="72" r="7" fill="#f59e0b"/>
+  <circle cx="124" cy="72" r="7" fill="#22c55e"/>
+  <text x="154" y="78" font-family="Menlo, Consolas, monospace" font-size="15" fill="#94a3b8">./scripts/run-local-demo.sh</text>
+
+  <text x="72" y="132" font-family="Menlo, Consolas, monospace" font-size="24" font-weight="700" fill="#e5e7eb">InfraOps Agent Hub local mock demo</text>
+  <text x="72" y="164" font-family="Menlo, Consolas, monospace" font-size="16" fill="#64748b">==================================</text>
+
+  <text x="72" y="214" font-family="Menlo, Consolas, monospace" font-size="17" fill="#38bdf8">Inputs</text>
+  <text x="92" y="246" font-family="Menlo, Consolas, monospace" font-size="15" fill="#cbd5e1">- alert: sample-alerts/invoicebridge-5xx-alert.json</text>
+  <text x="92" y="274" font-family="Menlo, Consolas, monospace" font-size="15" fill="#cbd5e1">- logs: sample-logs/invoicebridge-errors.json</text>
+  <text x="92" y="302" font-family="Menlo, Consolas, monospace" font-size="15" fill="#cbd5e1">- runbook: runbooks/high-5xx-error-rate.md</text>
+
+  <text x="72" y="356" font-family="Menlo, Consolas, monospace" font-size="17" fill="#38bdf8">Mocked agent outputs</text>
+  <text x="92" y="388" font-family="Menlo, Consolas, monospace" font-size="15" fill="#cbd5e1">- Triage: invoicebridge-api is above 5xx threshold at 8.7%</text>
+  <text x="92" y="416" font-family="Menlo, Consolas, monospace" font-size="15" fill="#cbd5e1">- Release correlation: errors concentrated after invoicebridge-api@2026.05.20.3</text>
+  <text x="92" y="444" font-family="Menlo, Consolas, monospace" font-size="15" fill="#cbd5e1">- Approval gate: human review required before rollback or config change</text>
+
+  <text x="72" y="500" font-family="Menlo, Consolas, monospace" font-size="17" fill="#22c55e">Final incident summary</text>
+  <text x="92" y="532" font-family="Menlo, Consolas, monospace" font-size="15" fill="#e5e7eb">Incident: inc-invoicebridge-2026-05-20-001</text>
+  <text x="92" y="560" font-family="Menlo, Consolas, monospace" font-size="15" fill="#e5e7eb">Status: human_review_required</text>
+  <text x="92" y="588" font-family="Menlo, Consolas, monospace" font-size="15" fill="#e5e7eb">Safety: mock-only, no external API calls, no production changes</text>
+</svg>

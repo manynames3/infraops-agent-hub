@@ -4,6 +4,26 @@ InfraOps Agent Hub is a local-first MVP scaffold for an AI-assisted infrastructu
 
 This repository is intentionally safe by default. Every integration is mocked, every production-impacting action requires human approval, and all sample workflows are designed for local demonstration only.
 
+## Demo Preview
+
+![n8n workflow preview](screenshots/n8n-workflow-preview.svg)
+
+The MVP shows a safe incident path: webhook alert intake, sample context loading, mocked agent reasoning, an approval gate, and placeholder outputs for GitHub, Postgres, and Slack. It is importable into n8n without real credentials.
+
+![local demo output](screenshots/local-demo-output.svg)
+
+Run the local demo:
+
+```bash
+cp config.example.env .env
+make up
+make demo
+```
+
+![audit schema preview](screenshots/audit-schema-preview.svg)
+
+For an interview-ready walkthrough, use `docs/hiring-manager-demo.md`.
+
 ## MVP Scope
 
 Included:
@@ -71,9 +91,11 @@ Not included yet:
 |   `-- rds-storage-pressure.md
 |-- sample-alerts/
 |-- sample-logs/
+|-- screenshots/
 |-- scripts/
 |-- config.example.env
 |-- docker-compose.yml
+|-- Makefile
 `-- README.md
 ```
 
@@ -90,7 +112,7 @@ Start local services:
 
 ```bash
 cp config.example.env .env
-./scripts/bootstrap-local.sh
+make up
 ```
 
 Open n8n:
@@ -115,8 +137,8 @@ Run a local mock triage without n8n:
 Run the smallest local incident demo:
 
 ```bash
-./scripts/bootstrap-local.sh
-./scripts/run-local-demo.sh
+make up
+make demo
 ```
 
 The demo reads:
@@ -130,7 +152,7 @@ It then produces deterministic mocked outputs for triage, release correlation, r
 Validate the scaffold:
 
 ```bash
-./scripts/validate-scaffold.sh
+make validate
 ```
 
 Apply the audit schema to local Postgres:

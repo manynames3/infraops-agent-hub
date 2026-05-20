@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">InfraOps Agent Hub n8n workflow preview</title>
+  <desc id="desc">Static preview of the credential-free n8n incident triage workflow.</desc>
+  <rect width="1200" height="675" fill="#f6f8fb"/>
+  <rect x="34" y="34" width="1132" height="607" rx="18" fill="#ffffff" stroke="#d7dee8"/>
+  <text x="70" y="82" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="#172033">Importable n8n Demo Workflow</text>
+  <text x="70" y="112" font-family="Inter, Arial, sans-serif" font-size="16" fill="#536174">Credential-free placeholders for alert triage, approval, GitHub, Postgres, and Slack.</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#667085"/>
+    </marker>
+    <style>
+      .node { fill: #ffffff; stroke: #c9d3df; stroke-width: 2; }
+      .node-strong { fill: #edf7ff; stroke: #60a5fa; stroke-width: 2; }
+      .node-safe { fill: #f0fdf4; stroke: #4ade80; stroke-width: 2; }
+      .node-warn { fill: #fff7ed; stroke: #fb923c; stroke-width: 2; }
+      .label { font-family: Inter, Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #1f2937; }
+      .sub { font-family: Inter, Arial, sans-serif; font-size: 12px; fill: #667085; }
+      .link { stroke: #667085; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <g transform="translate(70 184)">
+    <rect class="node-strong" x="0" y="0" width="138" height="74" rx="12"/>
+    <text class="label" x="20" y="31">Webhook</text>
+    <text class="sub" x="20" y="52">POST alert</text>
+
+    <path class="link" d="M145 37 H218"/>
+    <rect class="node" x="230" y="0" width="160" height="74" rx="12"/>
+    <text class="label" x="250" y="31">Alert Context</text>
+    <text class="sub" x="250" y="52">InvoiceBridge 5xx</text>
+
+    <path class="link" d="M397 37 H470"/>
+    <rect class="node" x="482" y="0" width="176" height="74" rx="12"/>
+    <text class="label" x="502" y="31">Logs + Runbook</text>
+    <text class="sub" x="502" y="52">sample placeholders</text>
+
+    <path class="link" d="M665 37 H738"/>
+    <rect class="node-strong" x="750" y="0" width="182" height="74" rx="12"/>
+    <text class="label" x="770" y="31">AI Placeholders</text>
+    <text class="sub" x="770" y="52">triage + planning</text>
+  </g>
+
+  <g transform="translate(173 328)">
+    <rect class="node-warn" x="0" y="0" width="190" height="82" rx="12"/>
+    <text class="label" x="22" y="32">Approval Gate</text>
+    <text class="sub" x="22" y="54">human approval required</text>
+
+    <path class="link" d="M197 41 H288"/>
+    <rect class="node" x="300" y="0" width="160" height="82" rx="12"/>
+    <text class="label" x="320" y="32">GitHub Issue</text>
+    <text class="sub" x="320" y="54">placeholder</text>
+
+    <path class="link" d="M467 41 H558"/>
+    <rect class="node-safe" x="570" y="0" width="172" height="82" rx="12"/>
+    <text class="label" x="590" y="32">Audit Insert</text>
+    <text class="sub" x="590" y="54">Postgres preview</text>
+
+    <path class="link" d="M749 41 H840"/>
+    <rect class="node" x="852" y="0" width="166" height="82" rx="12"/>
+    <text class="label" x="872" y="32">Slack Summary</text>
+    <text class="sub" x="872" y="54">placeholder</text>
+  </g>
+
+  <rect x="70" y="520" width="1060" height="72" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="96" y="551" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#172033">Safety boundary</text>
+  <text x="96" y="576" font-family="Inter, Arial, sans-serif" font-size="14" fill="#536174">No real AWS, GitHub, Slack, Postgres, or LLM calls are made by the imported workflow. Production-impacting steps stop at human approval.</text>
+</svg>

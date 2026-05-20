@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">InfraOps Agent Hub audit schema preview</title>
+  <desc id="desc">Static preview of the audit tables and approval relationships.</desc>
+  <rect width="1200" height="675" fill="#f8fafc"/>
+  <text x="64" y="72" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#172033">Audit-First Incident Control Plane</text>
+  <text x="64" y="104" font-family="Inter, Arial, sans-serif" font-size="16" fill="#536174">Postgres tables preserve agent output, approval decisions, tool intent, and incident evidence.</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#64748b"/>
+    </marker>
+    <style>
+      .table { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .head { fill: #e0f2fe; }
+      .title { font-family: Inter, Arial, sans-serif; font-size: 17px; font-weight: 700; fill: #172033; }
+      .row { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #475569; }
+      .line { stroke: #64748b; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <g transform="translate(64 156)">
+    <rect class="table" x="0" y="0" width="260" height="142" rx="10"/>
+    <rect class="head" x="0" y="0" width="260" height="42" rx="10"/>
+    <text class="title" x="18" y="28">agent_runs</text>
+    <text class="row" x="18" y="68">incident_id</text>
+    <text class="row" x="18" y="94">model_provider</text>
+    <text class="row" x="18" y="120">prompt_version</text>
+
+    <rect class="table" x="420" y="0" width="280" height="168" rx="10"/>
+    <rect class="head" x="420" y="0" width="280" height="42" rx="10"/>
+    <text class="title" x="438" y="28">approval_requests</text>
+    <text class="row" x="438" y="68">proposed_action</text>
+    <text class="row" x="438" y="94">risk_summary</text>
+    <text class="row" x="438" y="120">status + decided_by</text>
+    <text class="row" x="438" y="146">expires_at</text>
+
+    <rect class="table" x="832" y="0" width="270" height="168" rx="10"/>
+    <rect class="head" x="832" y="0" width="270" height="42" rx="10"/>
+    <text class="title" x="850" y="28">tool_invocations</text>
+    <text class="row" x="850" y="68">tool_name</text>
+    <text class="row" x="850" y="94">action_class</text>
+    <text class="row" x="850" y="120">blocked_reason</text>
+    <text class="row" x="850" y="146">request/response JSON</text>
+
+    <path class="line" d="M268 70 H410"/>
+    <path class="line" d="M708 84 H822"/>
+  </g>
+
+  <g transform="translate(222 420)">
+    <rect class="table" x="0" y="0" width="320" height="146" rx="10"/>
+    <rect class="head" x="0" y="0" width="320" height="42" rx="10"/>
+    <text class="title" x="18" y="28">incident_snapshots</text>
+    <text class="row" x="18" y="68">alert payload</text>
+    <text class="row" x="18" y="94">service + severity</text>
+    <text class="row" x="18" y="120">captured_at</text>
+
+    <rect class="table" x="500" y="0" width="330" height="146" rx="10"/>
+    <rect class="head" x="500" y="0" width="330" height="42" rx="10"/>
+    <text class="title" x="518" y="28">audit_events</text>
+    <text class="row" x="518" y="68">event_type</text>
+    <text class="row" x="518" y="94">action_class</text>
+    <text class="row" x="518" y="120">evidence JSONB</text>
+
+    <path class="line" d="M330 73 H490"/>
+  </g>
+
+  <text x="64" y="632" font-family="Inter, Arial, sans-serif" font-size="15" fill="#536174">Design rule: external writes are blocked if audit insert fails; production-impacting actions require human approval.</text>
+</svg>
