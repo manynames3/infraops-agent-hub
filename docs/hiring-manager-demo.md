@@ -31,7 +31,7 @@ Before the call:
   - `n8n/workflows/incident-triage-workflow.example.json`
   - `docs/real-integration-path.md`
   - `docs/deployment.md`
-- Capture screenshots into `screenshots/` if you want a static portfolio artifact.
+- Use the starter SVG previews in `screenshots/`, or replace them with captured screenshots from a live local run.
 
 Screenshots to capture:
 

@@ -4,13 +4,22 @@
 
 ```bash
 cp config.example.env .env
-./scripts/bootstrap-local.sh
+make up
 ```
 
 Local URLs:
 
 - n8n: http://localhost:5678
 - Adminer: http://localhost:8080 when started with the `tools` profile
+- Deployed landing page: https://infraops-agent-hub.pages.dev/
+
+To preview the landing page locally without Docker:
+
+```bash
+python3 -m http.server 8877
+```
+
+Then open http://localhost:8877.
 
 ## Import Workflow
 
@@ -22,10 +31,18 @@ n8n/workflows/incident-triage-workflow.example.json
 
 The workflow is inactive by default and uses only mock nodes.
 
+The imported workflow starts with a webhook trigger at:
+
+```text
+/webhook/infraops-agent-hub/incident-triage
+```
+
+It uses credential-free placeholder nodes for log/runbook loading, AI outputs, approval, GitHub Issue creation, Postgres audit insert preview, and Slack summary preview.
+
 ## Validate
 
 ```bash
-./scripts/validate-scaffold.sh
+make validate
 ```
 
 Validation checks:
@@ -43,6 +60,14 @@ Validation checks:
 ```
 
 The command prints deterministic JSON and does not call external services.
+
+## Run Local Incident Demo
+
+```bash
+make demo
+```
+
+The demo reads the InvoiceBridge 5xx alert, sample logs, and high-5xx runbook. It prints deterministic mocked agent outputs and inserts one audit event into local Postgres when the local stack is running.
 
 ## Apply Local Audit Schema
 

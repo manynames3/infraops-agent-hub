@@ -316,11 +316,18 @@ n8n volume backup:
 
 ```bash
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+N8N_VOLUME="$(docker volume ls --format '{{.Name}}' | grep '_n8n_data$' | head -n 1)"
+if [ -z "$N8N_VOLUME" ]; then
+  echo "Could not find n8n_data volume. Check docker volume ls." >&2
+  exit 1
+fi
 docker run --rm \
-  -v infraops-agent-hub_n8n_data:/data:ro \
+  -v "${N8N_VOLUME}:/data:ro" \
   -v /opt/infraops-agent-hub-backups:/backup \
   alpine tar -czf "/backup/n8n-data-${timestamp}.tgz" -C /data .
 ```
+
+The exact n8n volume name depends on the Compose project name. Check it with `docker volume ls` if the command above does not find the expected volume.
 
 Postgres volume backup is optional if logical `pg_dump` works. Prefer logical backups first because they are easier to inspect and restore across Postgres patch versions.
 
