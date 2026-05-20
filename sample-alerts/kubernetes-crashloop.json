@@ -1,0 +1,24 @@
+{
+  "alert_id": "alert-2026-05-20-004",
+  "source": "mock-prometheus",
+  "provider": "kubernetes",
+  "environment": "staging",
+  "service": "billing-worker",
+  "resource": "deployment/billing-worker",
+  "severity": "sev2",
+  "status": "firing",
+  "started_at": "2026-05-20T17:40:00Z",
+  "summary": "Pod restart count exceeded threshold for billing-worker deployment.",
+  "metric_context": {
+    "metric_name": "kube_pod_container_status_restarts_total",
+    "threshold": 5,
+    "observed_value": 12,
+    "unit": "restarts",
+    "window": "20m"
+  },
+  "labels": {
+    "team": "payments",
+    "cluster": "mock-staging-1",
+    "runbook": "runbooks/incident-triage.md"
+  }
+}

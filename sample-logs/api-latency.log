@@ -1,0 +1,5 @@
+2026-05-20T14:03:10Z checkout-api request_id=req-1001 route=/checkout method=POST status=200 latency_ms=184
+2026-05-20T14:04:12Z checkout-api request_id=req-1002 route=/checkout method=POST status=200 latency_ms=231
+2026-05-20T14:05:13Z checkout-api request_id=req-1003 route=/checkout method=POST status=502 latency_ms=3012 error=upstream_timeout
+2026-05-20T14:06:18Z checkout-api request_id=req-1004 route=/checkout method=POST status=502 latency_ms=3029 error=upstream_timeout
+2026-05-20T14:07:22Z checkout-api request_id=req-1005 route=/cart method=GET status=200 latency_ms=95

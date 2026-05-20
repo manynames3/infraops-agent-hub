@@ -1,0 +1,23 @@
+{
+  "alert_id": "alert-2026-05-20-003",
+  "source": "mock-github-actions",
+  "provider": "github",
+  "environment": "ci",
+  "service": "infraops-agent-hub",
+  "resource": "workflow/build-and-test",
+  "severity": "sev3",
+  "status": "firing",
+  "started_at": "2026-05-20T16:25:00Z",
+  "summary": "Build workflow failed on main branch after dependency update.",
+  "metric_context": {
+    "workflow": "build-and-test",
+    "branch": "main",
+    "failed_job": "unit-tests",
+    "duration_seconds": 384
+  },
+  "labels": {
+    "team": "platform",
+    "repository": "mock-owner/mock-repo",
+    "runbook": "runbooks/incident-triage.md"
+  }
+}

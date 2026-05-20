@@ -1,0 +1,25 @@
+{
+  "alert_id": "alert-2026-05-20-002",
+  "source": "mock-cloudwatch",
+  "provider": "aws",
+  "environment": "production",
+  "service": "orders-db",
+  "resource": "rds/cluster/orders-db",
+  "severity": "sev1",
+  "status": "firing",
+  "started_at": "2026-05-20T15:10:00Z",
+  "summary": "FreeStorageSpace projected to exhaust within 4 hours.",
+  "metric_context": {
+    "metric_name": "FreeStorageSpace",
+    "threshold": 53687091200,
+    "observed_value": 39728447488,
+    "unit": "Bytes",
+    "window": "30m",
+    "projected_exhaustion_hours": 4
+  },
+  "labels": {
+    "team": "database",
+    "region": "us-east-1",
+    "runbook": "runbooks/rds-storage-pressure.md"
+  }
+}

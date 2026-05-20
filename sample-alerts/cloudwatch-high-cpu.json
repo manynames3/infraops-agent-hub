@@ -1,0 +1,24 @@
+{
+  "alert_id": "alert-2026-05-20-001",
+  "source": "mock-cloudwatch",
+  "provider": "aws",
+  "environment": "staging",
+  "service": "checkout-api",
+  "resource": "ecs/service/checkout-api",
+  "severity": "sev2",
+  "status": "firing",
+  "started_at": "2026-05-20T14:05:00Z",
+  "summary": "CPUUtilization above 90 percent for 15 minutes on checkout-api tasks.",
+  "metric_context": {
+    "metric_name": "CPUUtilization",
+    "threshold": 90,
+    "observed_value": 94.7,
+    "unit": "Percent",
+    "window": "15m"
+  },
+  "labels": {
+    "team": "platform",
+    "region": "us-east-1",
+    "runbook": "runbooks/ecs-cpu-saturation.md"
+  }
+}

@@ -1,0 +1,5 @@
+2026-05-20T15:00:00Z rds cluster=orders-db free_storage_bytes=47244640256 growth_bytes_per_hour=6442450944
+2026-05-20T15:10:00Z rds cluster=orders-db free_storage_bytes=39728447488 growth_bytes_per_hour=7516192768
+2026-05-20T15:20:00Z rds cluster=orders-db free_storage_bytes=32212254720 growth_bytes_per_hour=7516192768
+2026-05-20T15:30:00Z rds cluster=orders-db free_storage_bytes=24696061952 growth_bytes_per_hour=7516192768
+2026-05-20T15:40:00Z rds cluster=orders-db free_storage_bytes=17179869184 growth_bytes_per_hour=7516192768

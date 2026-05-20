@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: infraops-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-infraops_hub}
+      POSTGRES_USER: ${POSTGRES_USER:-infraops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_infraops_password_do_not_use_in_prod}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./audit-schema/postgres.sql:/docker-entrypoint-initdb.d/001-audit-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  n8n:
+    image: n8nio/n8n:1.91.3
+    container_name: infraops-n8n
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: ${POSTGRES_DB:-infraops_hub}
+      DB_POSTGRESDB_USER: ${POSTGRES_USER:-infraops}
+      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD:-local_infraops_password_do_not_use_in_prod}
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER:-local-admin}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD:-local-password-change-me}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-local-only-replace-me-32-characters}
+      N8N_HOST: ${N8N_HOST:-localhost}
+      N8N_PORT: 5678
+      N8N_PROTOCOL: http
+      N8N_SECURE_COOKIE: "false"
+      WEBHOOK_URL: http://localhost:${N8N_PORT:-5678}/
+      GENERIC_TIMEZONE: ${GENERIC_TIMEZONE:-America/New_York}
+      INFRAOPS_INTEGRATION_MODE: mock
+      INFRAOPS_HUMAN_APPROVAL_REQUIRED: "true"
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/workspace/workflows:ro
+      - ./sample-alerts:/workspace/sample-alerts:ro
+      - ./sample-logs:/workspace/sample-logs:ro
+
+  adminer:
+    image: adminer:4.8.1
+    container_name: infraops-adminer
+    profiles:
+      - tools
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+
+volumes:
+  postgres_data:
+  n8n_data:

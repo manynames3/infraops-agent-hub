@@ -1,0 +1,219 @@
+{
+  "name": "InfraOps Agent Hub - Incident Triage Example",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "alert-id",
+              "name": "alert_id",
+              "value": "alert-2026-05-20-001",
+              "type": "string"
+            },
+            {
+              "id": "source",
+              "name": "source",
+              "value": "mock-cloudwatch",
+              "type": "string"
+            },
+            {
+              "id": "service",
+              "name": "service",
+              "value": "checkout-api",
+              "type": "string"
+            },
+            {
+              "id": "environment",
+              "name": "environment",
+              "value": "staging",
+              "type": "string"
+            },
+            {
+              "id": "severity",
+              "name": "severity",
+              "value": "sev2",
+              "type": "string"
+            },
+            {
+              "id": "summary",
+              "name": "summary",
+              "value": "CPUUtilization above 90 percent for 15 minutes on checkout-api tasks.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "load-sample-alert",
+      "name": "Load Sample Alert",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const alert = $input.first().json;\nconst isProduction = alert.environment === 'production';\nconst severityScore = alert.severity === 'sev1' ? 1 : alert.severity === 'sev2' ? 2 : 3;\nconst likelyCause = alert.summary.toLowerCase().includes('cpu') ? 'Sustained compute saturation or runaway request load.' : 'Unknown condition requiring operator review.';\nreturn [{\n  json: {\n    ...alert,\n    triage_mode: 'mock',\n    severity_score: severityScore,\n    likely_cause: likelyCause,\n    recommended_runbook: 'runbooks/ecs-cpu-saturation.md',\n    safe_next_steps: [\n      'Review recent deployment timeline.',\n      'Inspect read-only service metrics.',\n      'Compare sample logs against known saturation patterns.',\n      'Draft an approval request before any scaling or rollback action.'\n    ],\n    production_impacting_action: isProduction,\n    approval_required: true,\n    automation_status: 'blocked_until_human_approval'\n  }\n}];"
+      },
+      "id": "mock-triage",
+      "name": "Mock Triage",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "decision",
+              "name": "decision",
+              "value": "HUMAN_APPROVAL_REQUIRED",
+              "type": "string"
+            },
+            {
+              "id": "approval-message",
+              "name": "approval_message",
+              "value": "No production-impacting remediation will run from this workflow. A human must approve any scale, rollback, restart, deploy, permission, data, or customer-facing communication action.",
+              "type": "string"
+            },
+            {
+              "id": "recommended-action",
+              "name": "recommended_action",
+              "value": "Prepare an approval request using prompts/approval-request.md.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "approval-gate",
+      "name": "Approval Gate",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "audit-event-type",
+              "name": "audit_event_type",
+              "value": "triage.recommendation.created",
+              "type": "string"
+            },
+            {
+              "id": "audit-event-mode",
+              "name": "audit_event_mode",
+              "value": "preview_only",
+              "type": "string"
+            },
+            {
+              "id": "audit-note",
+              "name": "audit_note",
+              "value": "This node previews the audit payload. It does not write to Postgres or call any external API.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "audit-preview",
+      "name": "Audit Event Preview",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Load Sample Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Sample Alert": {
+      "main": [
+        [
+          {
+            "node": "Mock Triage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock Triage": {
+      "main": [
+        [
+          {
+            "node": "Approval Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Gate": {
+      "main": [
+        [
+          {
+            "node": "Audit Event Preview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "versionId": "mock-local-version",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "description": "Mock-only incident triage workflow. No live AWS, Slack, GitHub, or LLM calls."
+  },
+  "tags": [
+    {
+      "name": "infraops-agent-hub"
+    },
+    {
+      "name": "mock"
+    }
+  ]
+}

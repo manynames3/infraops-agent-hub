@@ -1,0 +1,5 @@
+2026-05-20T14:00:00Z ecs service=checkout-api desired=6 running=6 cpu_avg=82.1 memory_avg=61.4
+2026-05-20T14:05:00Z ecs service=checkout-api desired=6 running=6 cpu_avg=91.8 memory_avg=63.0
+2026-05-20T14:10:00Z ecs service=checkout-api desired=6 running=6 cpu_avg=94.7 memory_avg=64.2
+2026-05-20T14:15:00Z ecs service=checkout-api desired=6 running=6 cpu_avg=95.2 memory_avg=64.0
+2026-05-20T14:20:00Z ecs service=checkout-api desired=6 running=6 cpu_avg=93.9 memory_avg=64.8
