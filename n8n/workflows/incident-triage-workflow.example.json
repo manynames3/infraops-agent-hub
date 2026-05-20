@@ -1,196 +1,344 @@
 {
-  "name": "InfraOps Agent Hub - Incident Triage Example",
+  "name": "InfraOps Agent Hub - Importable Incident Triage Demo",
   "nodes": [
     {
-      "parameters": {},
-      "id": "manual-trigger",
-      "name": "Manual Trigger",
-      "type": "n8n-nodes-base.manualTrigger",
+      "parameters": {
+        "content": "Importable local demo workflow. All nodes are mock-only and credential-free. Trigger with POST /webhook/infraops-agent-hub/incident-triage, or execute in n8n test mode.",
+        "height": 180,
+        "width": 360,
+        "color": 4
+      },
+      "id": "note-demo-overview",
+      "name": "Demo Overview",
+      "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -520,
+        -260
       ]
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "alert-id",
-              "name": "alert_id",
-              "value": "alert-2026-05-20-001",
-              "type": "string"
-            },
-            {
-              "id": "source",
-              "name": "source",
-              "value": "mock-cloudwatch",
-              "type": "string"
-            },
-            {
-              "id": "service",
-              "name": "service",
-              "value": "checkout-api",
-              "type": "string"
-            },
-            {
-              "id": "environment",
-              "name": "environment",
-              "value": "staging",
-              "type": "string"
-            },
-            {
-              "id": "severity",
-              "name": "severity",
-              "value": "sev2",
-              "type": "string"
-            },
-            {
-              "id": "summary",
-              "name": "summary",
-              "value": "CPUUtilization above 90 percent for 15 minutes on checkout-api tasks.",
-              "type": "string"
-            }
-          ]
-        },
+        "httpMethod": "POST",
+        "path": "infraops-agent-hub/incident-triage",
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson",
         "options": {}
       },
-      "id": "load-sample-alert",
-      "name": "Load Sample Alert",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
       "position": [
-        260,
-        0
-      ]
+        -520,
+        40
+      ],
+      "webhookId": "infraops-agent-hub-incident-triage-demo"
     },
     {
       "parameters": {
-        "jsCode": "const alert = $input.first().json;\nconst isProduction = alert.environment === 'production';\nconst severityScore = alert.severity === 'sev1' ? 1 : alert.severity === 'sev2' ? 2 : 3;\nconst likelyCause = alert.summary.toLowerCase().includes('cpu') ? 'Sustained compute saturation or runaway request load.' : 'Unknown condition requiring operator review.';\nreturn [{\n  json: {\n    ...alert,\n    triage_mode: 'mock',\n    severity_score: severityScore,\n    likely_cause: likelyCause,\n    recommended_runbook: 'runbooks/ecs-cpu-saturation.md',\n    safe_next_steps: [\n      'Review recent deployment timeline.',\n      'Inspect read-only service metrics.',\n      'Compare sample logs against known saturation patterns.',\n      'Draft an approval request before any scaling or rollback action.'\n    ],\n    production_impacting_action: isProduction,\n    approval_required: true,\n    automation_status: 'blocked_until_human_approval'\n  }\n}];"
+        "jsCode": "const incoming = $input.first()?.json ?? {};\nconst body = incoming.body && Object.keys(incoming.body).length > 0 ? incoming.body : {};\nconst sampleAlert = {\n  alert_id: 'alert-2026-05-20-invoicebridge-5xx',\n  incident_id: 'inc-invoicebridge-2026-05-20-001',\n  source: 'mock-cloudwatch',\n  provider: 'aws',\n  environment: 'staging',\n  service: 'invoicebridge-api',\n  resource: 'alb/target-group/invoicebridge-api',\n  severity: 'sev2',\n  status: 'firing',\n  started_at: '2026-05-20T14:05:00Z',\n  summary: 'HTTP 5xx error rate for invoicebridge-api exceeded 8 percent for 10 minutes.',\n  metric_context: {\n    metric_name: 'HTTPCode_Target_5XX_Count',\n    error_rate_percent: 8.7,\n    threshold_percent: 5,\n    request_count: 18420,\n    error_count: 1603,\n    window: '10m'\n  },\n  labels: {\n    team: 'platform-apps',\n    region: 'us-east-1',\n    runbook: 'runbooks/high-5xx-error-rate.md',\n    customer_impact: 'Invoice PDF generation and webhook delivery are intermittently failing.'\n  }\n};\nconst alert = { ...sampleAlert, ...body };\nreturn [{\n  json: {\n    alert,\n    context_source: 'sample-alerts/invoicebridge-5xx-alert.json',\n    demo_mode: 'mock',\n    external_api_calls: 0,\n    production_changes: 0\n  }\n}];"
       },
-      "id": "mock-triage",
-      "name": "Mock Triage",
+      "id": "sample-alert-context",
+      "name": "Sample Alert Context",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        520,
-        0
+        -240,
+        40
       ]
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "decision",
-              "name": "decision",
-              "value": "HUMAN_APPROVAL_REQUIRED",
-              "type": "string"
-            },
-            {
-              "id": "approval-message",
-              "name": "approval_message",
-              "value": "No production-impacting remediation will run from this workflow. A human must approve any scale, rollback, restart, deploy, permission, data, or customer-facing communication action.",
-              "type": "string"
-            },
-            {
-              "id": "recommended-action",
-              "name": "recommended_action",
-              "value": "Prepare an approval request using prompts/approval-request.md.",
-              "type": "string"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
+        "content": "Sample context node. In production this would normalize incoming alert payloads. For this demo, it falls back to sample-alerts/invoicebridge-5xx-alert.json and accepts optional webhook body overrides.",
+        "height": 180,
+        "width": 360,
+        "color": 5
       },
-      "id": "approval-gate",
-      "name": "Approval Gate",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "id": "note-alert-context",
+      "name": "Alert Context Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
       "position": [
-        780,
-        0
+        -240,
+        -260
       ]
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "audit-event-type",
-              "name": "audit_event_type",
-              "value": "triage.recommendation.created",
-              "type": "string"
-            },
-            {
-              "id": "audit-event-mode",
-              "name": "audit_event_mode",
-              "value": "preview_only",
-              "type": "string"
-            },
-            {
-              "id": "audit-note",
-              "name": "audit_note",
-              "value": "This node previews the audit payload. It does not write to Postgres or call any external API.",
-              "type": "string"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
+        "jsCode": "const item = $input.first().json;\nconst sampleLogs = {\n  source_file: 'sample-logs/invoicebridge-errors.json',\n  time_window: {\n    start: '2026-05-20T13:55:00Z',\n    end: '2026-05-20T14:15:00Z'\n  },\n  release_events: [\n    {\n      timestamp: '2026-05-20T13:58:22Z',\n      release: 'invoicebridge-api@2026.05.20.3',\n      commit: 'mock-7f3a91c',\n      actor: 'mock-deployer',\n      change_summary: 'Updated invoice PDF renderer timeout and webhook retry handling.'\n    }\n  ],\n  error_summary: {\n    sampled_5xx_entries: 4,\n    dominant_route: '/v1/invoices/render',\n    statuses: {\n      '500': 1,\n      '502': 2,\n      '504': 1\n    },\n    sample_request_ids: ['req-inv-1038', 'req-inv-1075', 'req-inv-1102', 'req-inv-1164']\n  }\n};\nconst runbook = {\n  source_file: 'runbooks/high-5xx-error-rate.md',\n  title: 'High 5xx Error Rate Runbook',\n  matched_terms: ['5xx', 'timeout', 'release', 'rollback', 'customer-facing'],\n  approval_required_actions: [\n    'Rollback a release',\n    'Restart workloads',\n    'Scale service capacity',\n    'Change timeout, retry, queue, or rate-limit configuration',\n    'Send customer-facing status updates'\n  ]\n};\nreturn [{\n  json: {\n    ...item,\n    logs: sampleLogs,\n    runbook,\n    loading_placeholders: {\n      log_loader: 'Placeholder for future log source adapter. No log API call is made.',\n      runbook_loader: 'Placeholder for future docs or repository lookup. Static sample content is embedded.'\n    }\n  }\n}];"
       },
-      "id": "audit-preview",
-      "name": "Audit Event Preview",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "id": "sample-log-runbook-placeholders",
+      "name": "Sample Log and Runbook Placeholders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        60,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Loading placeholders. These nodes intentionally avoid filesystem, GitHub, log platform, or cloud calls. They document where sample-logs/invoicebridge-errors.json and runbooks/high-5xx-error-rate.md would be loaded by future adapters.",
+        "height": 200,
+        "width": 380,
+        "color": 5
+      },
+      "id": "note-loaders",
+      "name": "Loader Placeholder Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "content": "AI agent placeholder zone. The next three Code nodes simulate deterministic agent outputs: triage, release correlation, and next-step planning. No LLM provider is called.",
+        "height": 180,
+        "width": 520,
+        "color": 6
+      },
+      "id": "note-ai-agent-placeholder",
+      "name": "AI Agent Placeholder Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        360,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst alert = item.alert;\nconst logs = item.logs;\nconst triage = {\n  stage: 'triage',\n  mode: 'mock-ai-agent-placeholder',\n  finding: `${alert.service} is above its 5xx threshold at ${alert.metric_context.error_rate_percent} percent over ${alert.metric_context.window}.`,\n  impact: alert.labels.customer_impact,\n  severity: alert.severity,\n  evidence: [\n    alert.summary,\n    `${logs.error_summary.sampled_5xx_entries} sampled 5xx log entries.`,\n    `Dominant route: ${logs.error_summary.dominant_route}.`\n  ]\n};\nreturn [{ json: { ...item, triage } }];"
+      },
+      "id": "ai-placeholder-triage",
+      "name": "AI Placeholder - Triage",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        380,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst release = item.logs.release_events[0];\nconst releaseCorrelation = {\n  stage: 'release_correlation',\n  mode: 'mock-ai-agent-placeholder',\n  finding: `Errors are concentrated after ${release.release}, deployed at ${release.timestamp}.`,\n  confidence: 'medium',\n  release,\n  caveat: 'Correlation is not proof of root cause; continue read-only checks before proposing remediation.'\n};\nreturn [{ json: { ...item, release_correlation: releaseCorrelation } }];"
+      },
+      "id": "ai-placeholder-release-correlation",
+      "name": "AI Placeholder - Release Correlation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst runbookLookup = {\n  stage: 'runbook_lookup',\n  mode: 'mock-ai-agent-placeholder',\n  selected_runbook: item.runbook.source_file,\n  matched_terms: item.runbook.matched_terms,\n  reason: 'Alert and logs indicate elevated HTTP 5xx responses with timeout and release-correlation signals.'\n};\nconst nextStepPlan = {\n  stage: 'next_step_planning',\n  mode: 'mock-ai-agent-placeholder',\n  read_only_steps: [\n    'Review route-level 5xx rate for /v1/invoices/render and /v1/webhooks/deliver.',\n    'Compare errors before and after invoicebridge-api@2026.05.20.3.',\n    'Inspect renderer timeout metrics and queue depth using approved read-only telemetry.',\n    'Prepare an approval request before rollback, restart, scaling, or config changes.'\n  ],\n  approval_required_steps: item.runbook.approval_required_actions,\n  blocked_steps: ['No production mutation is allowed from this demo workflow.']\n};\nreturn [{ json: { ...item, runbook_lookup: runbookLookup, next_step_plan: nextStepPlan } }];"
+      },
+      "id": "ai-placeholder-runbook-planning",
+      "name": "AI Placeholder - Runbook and Planning",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         1040,
-        0
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst approvalGate = {\n  stage: 'approval_gate',\n  mode: 'placeholder',\n  decision: 'HUMAN_APPROVAL_REQUIRED',\n  allowed_now: ['Read-only diagnosis', 'Incident documentation', 'Draft follow-up tasks'],\n  blocked_until_approval: item.next_step_plan.approval_required_steps,\n  message: 'No rollback, restart, scaling, config change, or customer-facing message may run without human approval.'\n};\nreturn [{ json: { ...item, approval_gate: approvalGate } }];"
+      },
+      "id": "approval-gate-placeholder",
+      "name": "Approval Gate Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Approval placeholder. This is deliberately a Code node, not an approval integration. It blocks production-impacting actions and records what would require human approval.",
+        "height": 180,
+        "width": 360,
+        "color": 3
+      },
+      "id": "note-approval-placeholder",
+      "name": "Approval Placeholder Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst githubIssue = {\n  stage: 'github_issue_placeholder',\n  mode: 'placeholder_no_credentials',\n  would_create_issue: true,\n  repository: 'mock-owner/mock-repo',\n  title: `[${item.alert.severity.toUpperCase()}] ${item.alert.service} elevated 5xx rate`,\n  body_preview: [\n    item.triage.finding,\n    item.release_correlation.finding,\n    `Runbook: ${item.runbook_lookup.selected_runbook}`,\n    'Approval required before rollback or configuration change.'\n  ].join('\\n')\n};\nreturn [{ json: { ...item, github_issue_placeholder: githubIssue } }];"
+      },
+      "id": "github-issue-placeholder",
+      "name": "GitHub Issue Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst auditInsert = {\n  stage: 'postgres_audit_insert_placeholder',\n  mode: 'placeholder_no_credentials',\n  table: 'infraops_audit.audit_events',\n  event_type: 'triage.recommendation.created',\n  action_class: 'read_only',\n  sql_preview: 'INSERT INTO infraops_audit.audit_events (...) VALUES (...);',\n  note: 'This demo node previews the audit insert. The runnable shell demo performs a real local Postgres insert.'\n};\nreturn [{ json: { ...item, postgres_audit_insert_placeholder: auditInsert } }];"
+      },
+      "id": "postgres-audit-insert-placeholder",
+      "name": "Postgres Audit Insert Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2060,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst documentation = {\n  stage: 'documentation',\n  mode: 'mock-ai-agent-placeholder',\n  incident_note: `InvoiceBridge is experiencing elevated 5xx responses in ${item.alert.environment}. ${item.release_correlation.finding}`,\n  operator_handoff: 'Continue read-only diagnosis and request human approval before rollback, restart, scaling, configuration change, or external communication.'\n};\nconst slackSummary = {\n  stage: 'slack_summary_placeholder',\n  mode: 'placeholder_no_credentials',\n  channel: '#mock-incident-triage',\n  message_preview: [\n    `Incident: ${item.alert.incident_id}`,\n    `Service: ${item.alert.service}`,\n    `Status: human_review_required`,\n    `Runbook: ${item.runbook_lookup.selected_runbook}`,\n    'No Slack API call was made.'\n  ].join('\\n')\n};\nconst finalSummary = {\n  incident_id: item.alert.incident_id,\n  service: item.alert.service,\n  environment: item.alert.environment,\n  severity: item.alert.severity,\n  status: 'human_review_required',\n  likely_cause: 'Recent release changed renderer timeout or webhook retry behavior; mock confidence is medium.',\n  recommended_next_step: 'Continue read-only checks and draft a human approval request for any rollback or config change.',\n  approval_required: true,\n  safety: {\n    external_api_calls: 0,\n    production_changes: 0,\n    credentials_required_for_import: false\n  }\n};\nreturn [{ json: { ...item, documentation, slack_summary_placeholder: slackSummary, final_summary: finalSummary } }];"
+      },
+      "id": "documentation-slack-summary-placeholder",
+      "name": "Documentation and Slack Summary Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "External integration placeholders. These nodes preview GitHub Issue creation, Postgres audit insert, and Slack summary payloads. They are not GitHub, Postgres, or Slack credentialed nodes, so import should not prompt for credentials.",
+        "height": 220,
+        "width": 620,
+        "color": 7
+      },
+      "id": "note-integration-placeholders",
+      "name": "Integration Placeholder Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1720,
+        -300
       ]
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook Trigger": [
+      {
+        "json": {
+          "body": {
+            "alert_id": "alert-2026-05-20-invoicebridge-5xx",
+            "incident_id": "inc-invoicebridge-2026-05-20-001"
+          }
+        }
+      }
+    ]
+  },
   "connections": {
-    "Manual Trigger": {
+    "Webhook Trigger": {
       "main": [
         [
           {
-            "node": "Load Sample Alert",
+            "node": "Sample Alert Context",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Load Sample Alert": {
+    "Sample Alert Context": {
       "main": [
         [
           {
-            "node": "Mock Triage",
+            "node": "Sample Log and Runbook Placeholders",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Mock Triage": {
+    "Sample Log and Runbook Placeholders": {
       "main": [
         [
           {
-            "node": "Approval Gate",
+            "node": "AI Placeholder - Triage",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Approval Gate": {
+    "AI Placeholder - Triage": {
       "main": [
         [
           {
-            "node": "Audit Event Preview",
+            "node": "AI Placeholder - Release Correlation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Placeholder - Release Correlation": {
+      "main": [
+        [
+          {
+            "node": "AI Placeholder - Runbook and Planning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Placeholder - Runbook and Planning": {
+      "main": [
+        [
+          {
+            "node": "Approval Gate Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Gate Placeholder": {
+      "main": [
+        [
+          {
+            "node": "GitHub Issue Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub Issue Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Postgres Audit Insert Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Audit Insert Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Documentation and Slack Summary Placeholder",
             "type": "main",
             "index": 0
           }
@@ -201,12 +349,13 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "saveManualExecutions": true
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "mock-local-version",
+  "versionId": "importable-mock-local-version",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "description": "Mock-only incident triage workflow. No live AWS, Slack, GitHub, or LLM calls."
+    "description": "Credential-free mock incident triage workflow. No live AWS, Slack, GitHub, Postgres, or LLM calls."
   },
   "tags": [
     {
@@ -214,6 +363,9 @@
     },
     {
       "name": "mock"
+    },
+    {
+      "name": "importable-demo"
     }
   ]
 }
