@@ -9,6 +9,7 @@ make up
 
 Local URLs:
 
+- Hosted demo route: http://localhost:8877/demo.html when served with Python.
 - n8n: http://localhost:5678
 - Adminer: http://localhost:8080 when started with the `tools` profile
 - Deployed landing page: https://infraops-agent-hub.pages.dev/
@@ -20,6 +21,14 @@ python3 -m http.server 8877
 ```
 
 Then open http://localhost:8877.
+
+Open the browser incident packet demo at:
+
+```text
+http://localhost:8877/demo.html
+```
+
+It reads the same InvoiceBridge alert, log sample, and high-5xx runbook used by `make demo`. It does not require Docker and stores only a browser-local audit preview unless the hosted API path is configured separately.
 
 ## Import Workflow
 
@@ -68,6 +77,8 @@ make demo
 ```
 
 The demo reads the InvoiceBridge 5xx alert, sample logs, and high-5xx runbook. It prints deterministic mocked agent outputs and inserts one audit event into local Postgres when the local stack is running.
+
+The browser-hosted demo and local CLI demo intentionally share the same incident scenario. The CLI path proves local Postgres writes; the browser path proves the buyer-facing incident packet experience.
 
 ## Apply Local Audit Schema
 

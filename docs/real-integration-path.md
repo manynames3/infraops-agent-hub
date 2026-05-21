@@ -220,6 +220,8 @@ GRANT INSERT, SELECT, UPDATE ON infraops_audit.tool_invocations TO infraops_audi
 
 Implementation notes:
 
+- Keep the application on standard Postgres through one `DATABASE_URL`; see `docs/database-portability.md`.
+- Use Neon for low-cost hosted evaluation and AWS RDS PostgreSQL when production buyers require AWS-native controls.
 - Split runtime roles from migration/admin roles.
 - Runtime should not own tables.
 - Runtime should not have broad schema changes.
@@ -345,7 +347,7 @@ Lightsail is suitable for a small portfolio or team demo if the deployment stays
 Recommended deployment shape:
 
 - One small Lightsail instance for the app and workflow runner.
-- Managed external Postgres only if audit retention matters beyond the demo.
+- Neon Postgres for low-cost hosted evaluation, or AWS RDS PostgreSQL when production controls justify it.
 - Keep n8n, adapter API, and local worker count low.
 - Disable high-frequency polling by default.
 - Prefer webhook-driven flows.

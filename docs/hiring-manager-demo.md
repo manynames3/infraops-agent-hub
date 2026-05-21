@@ -20,14 +20,18 @@ The strongest story is not "an AI fixes production." The strongest story is "an 
 Before the call:
 
 - Run `./scripts/validate-scaffold.sh`.
+- Open the hosted demo: https://infraops-agent-hub.pages.dev/demo.html
 - Start the local stack with `./scripts/bootstrap-local.sh`.
 - Run `./scripts/run-local-demo.sh` once.
 - Import `n8n/workflows/incident-triage-workflow.example.json` into n8n.
 - Open these files in editor tabs:
   - `README.md`
   - `docs/hiring-manager-demo.md`
+  - `demo.html`
+  - `assets/demo-engine.mjs`
   - `scripts/run-local-demo.sh`
   - `audit-schema/postgres.sql`
+  - `docs/database-portability.md`
   - `n8n/workflows/incident-triage-workflow.example.json`
   - `docs/real-integration-path.md`
   - `docs/deployment.md`
@@ -36,6 +40,7 @@ Before the call:
 Screenshots to capture:
 
 - Repository root and README.
+- Hosted incident packet demo after running the sample incident.
 - n8n imported workflow canvas.
 - Approval Gate Placeholder output.
 - Terminal output from `./scripts/run-local-demo.sh`.
@@ -50,11 +55,11 @@ Screenshots to capture:
 
 0:20-0:45:
 
-"The demo incident is an InvoiceBridge 5xx spike. The local script reads a sample alert, structured error logs, and a high-5xx runbook. It produces mocked agent outputs for triage, release correlation, runbook lookup, next-step planning, and documentation. No AWS, GitHub, Slack, or LLM APIs are called."
+"The demo incident is an InvoiceBridge 5xx spike. The hosted demo reads a sample alert, structured error logs, and a high-5xx runbook, then renders the triage packet, release correlation, runbook match, approval gate, handoff note, and audit-event preview. No AWS, GitHub, Slack, or LLM APIs are called."
 
 0:45-1:15:
 
-"The n8n workflow shows the same product flow visually. It starts with a webhook trigger, loads sample context, passes through AI placeholder nodes, blocks at the approval gate, and previews GitHub, Postgres, and Slack integration payloads without requiring credentials. This makes the demo importable and safe."
+"The n8n workflow shows the same product flow visually. It starts with a webhook trigger, loads sample context, passes through AI placeholder nodes, blocks at the approval gate, and previews GitHub, Postgres, and Slack integration payloads without requiring credentials. This makes the workflow importable and safe."
 
 1:15-1:40:
 
@@ -62,7 +67,7 @@ Screenshots to capture:
 
 1:40-2:00:
 
-"The production path is documented but intentionally not overbuilt. The next step would be read-only CloudWatch and GitHub adapters, Slack approval messages, an LLM adapter with redaction and schema validation, and deployment on one small VPS or Lightsail instance before considering managed AWS services."
+"The production path is documented but intentionally not overbuilt. Neon is the low-cost hosted Postgres target for evaluation, while AWS RDS is the production target when private networking and AWS-native controls matter. The next technical step is read-only CloudWatch and GitHub adapters, Slack approval messages, and an LLM adapter with redaction and schema validation."
 
 ## Architecture Explanation
 
@@ -99,14 +104,37 @@ Audit Event in Postgres
 Operator Summary
 ```
 
+Hosted demo path:
+
+```text
+demo.html
+  |
+  v
+assets/demo.js
+  |
+  +--> /api/run-demo-incident when Pages Functions are available
+  +--> browser-only fallback when served statically
+  |
+  v
+assets/demo-engine.mjs
+  |
+  +--> incident packet
+  +--> approval gate
+  +--> audit-event preview shaped like infraops_audit.audit_events
+```
+
 Key files:
 
 - `scripts/run-local-demo.sh`: End-to-end local demo path.
+- `demo.html`: Buyer-facing hosted incident packet demo.
+- `assets/demo-engine.mjs`: Deterministic packet generator used by browser and API demo paths.
+- `functions/api/run-demo-incident.js`: Safe Cloudflare Pages Function mock API.
 - `n8n/workflows/incident-triage-workflow.example.json`: Importable visual workflow.
 - `audit-schema/postgres.sql`: Audit and approval data model.
 - `runbooks/high-5xx-error-rate.md`: Human-readable operations guidance.
 - `prompts/`: Future LLM behavior contracts.
 - `docs/real-integration-path.md`: Path from mock adapters to real integrations.
+- `docs/database-portability.md`: Neon now, RDS later, with standard Postgres in both cases.
 - `docs/deployment.md`: Low-cost deployment plan.
 
 ## What This Project Proves Technically
@@ -115,9 +143,10 @@ Key files:
 - Can separate read-only diagnosis from approval-required remediation.
 - Can build an audit-first data model instead of treating logs as an afterthought.
 - Can create runnable local demos that do not depend on paid APIs or live cloud access.
+- Can create hosted product demos that make the core value visible before a buyer installs anything.
 - Can structure n8n workflows for clear operator handoff without requiring credentials at import time.
 - Can think through least-privilege IAM, GitHub, Slack, Postgres, and LLM integration paths.
-- Can keep portfolio infrastructure cost low with a one-server deployment plan.
+- Can keep portfolio infrastructure cost low while preserving a credible AWS RDS production migration path.
 - Can document a path to production without prematurely building unnecessary platform complexity.
 
 ## What Is Mocked vs Real
@@ -131,6 +160,8 @@ Real in the MVP:
 - JSON sample alerts and logs.
 - Runbook markdown.
 - n8n workflow import file.
+- Hosted browser incident packet demo.
+- Safe Pages Function mock API.
 - Local Postgres audit insert from `scripts/run-local-demo.sh`.
 - Safety checks in scripts.
 
@@ -160,7 +191,8 @@ Use or adapt these depending on the role:
 - Designed an approval-gated infrastructure operations workflow that separates read-only diagnosis from production-impacting actions and records incident evidence in a structured audit schema.
 - Created an importable credential-free n8n workflow demonstrating webhook alert ingestion, mock agent triage, release correlation, runbook lookup, approval gates, and placeholder GitHub, Slack, and Postgres integrations.
 - Implemented a deterministic local demo script that reads sample alerts/logs/runbooks, generates mocked agent outputs, inserts an audit event into Postgres, and prints an operator-ready incident summary.
-- Documented a least-privilege productionization path for AWS CloudWatch, GitHub, Slack, Postgres, LLM providers, approval enforcement, and low-cost Lightsail/VPS deployment.
+- Built a hosted incident packet demo that renders triage, release correlation, runbook lookup, approval-gated next steps, and audit-event preview from repository sample data.
+- Documented a least-privilege productionization path for AWS CloudWatch, GitHub, Slack, Postgres, LLM providers, approval enforcement, Neon evaluation storage, and AWS RDS production migration.
 
 ## Interview Talking Points
 
@@ -172,7 +204,7 @@ Safety:
 
 Pragmatism:
 
-- "I kept the first deployment to one VPS because the MVP does not need RDS, NAT Gateway, ALB, ECS, or OpenSearch yet."
+- "I kept the hosted demo cheap with static hosting and standard Postgres portability. RDS is documented as the production target, not the first demo dependency."
 - "The demo is runnable without paid APIs, which makes it reliable in an interview."
 
 Product judgment:
@@ -189,19 +221,20 @@ Technical depth:
 ## Suggested Live Demo Flow
 
 1. Start at `README.md` and explain the product in one sentence.
-2. Open `sample-alerts/invoicebridge-5xx-alert.json` and `sample-logs/invoicebridge-errors.json`.
-3. Run:
+2. Open https://infraops-agent-hub.pages.dev/demo.html and click `Run sample incident`.
+3. Point out the triage packet, approval gate, audit-event preview, and zero external API calls.
+4. Open `sample-alerts/invoicebridge-5xx-alert.json` and `sample-logs/invoicebridge-errors.json`.
+5. Run:
 
    ```bash
    ./scripts/run-local-demo.sh
    ```
 
-4. Point out the final summary and audit record ID.
-5. Open `audit-schema/postgres.sql` and explain the audit model.
-6. Open n8n and show the importable workflow.
-7. Click through the approval gate and placeholders.
-8. Open `docs/real-integration-path.md` and explain how real integrations would be added safely.
-9. Open `docs/deployment.md` and explain the low-cost portfolio deployment path.
+6. Point out the final summary and audit record ID.
+7. Open `audit-schema/postgres.sql` and explain the audit model.
+8. Open n8n and show the importable workflow.
+9. Open `docs/database-portability.md` and explain Neon now, RDS later.
+10. Open `docs/real-integration-path.md` and explain how real integrations would be added safely.
 
 ## Next Steps To Productionize
 
@@ -252,6 +285,10 @@ Why n8n?
 Why local Postgres?
 
 - It gives a real audit persistence path while keeping the demo inexpensive and portable.
+
+Why Neon before AWS RDS?
+
+- Neon is better for a cheap hosted evaluation demo. AWS RDS is better once production buyers require private networking, AWS-native controls, and stronger operational guarantees.
 
 Why not use AWS managed services immediately?
 

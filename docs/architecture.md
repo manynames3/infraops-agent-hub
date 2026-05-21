@@ -10,6 +10,8 @@ Alert -> Triage -> Runbook Match -> Approval Gate -> Audit Record -> Human Actio
 
 - Alert sources: Mock alert payloads in `sample-alerts/`.
 - Evidence sources: Mock log excerpts in `sample-logs/`.
+- Hosted demo UI: `demo.html`, `assets/demo.js`, and `assets/demo-engine.mjs`.
+- Safe demo API: Cloudflare Pages Function in `functions/api/run-demo-incident.js`.
 - Workflow layer: n8n example workflow in `n8n/workflows/`.
 - Agent layer: Prompt contracts in `prompts/`.
 - Operations layer: Human runbooks in `runbooks/`.
@@ -18,11 +20,12 @@ Alert -> Triage -> Runbook Match -> Approval Gate -> Audit Record -> Human Actio
 
 ## Data Flow
 
-1. A mock alert enters the workflow.
-2. The triage prompt summarizes the alert and selects a runbook.
-3. The remediation prompt drafts a plan but marks production actions as approval-required.
-4. The approval prompt prepares a human review packet.
-5. Audit records capture the run, decision, and proposed tool actions.
+1. A mock alert enters the hosted demo, CLI demo, or n8n workflow.
+2. The packet generator summarizes alert and log evidence.
+3. The workflow selects the high-5xx runbook.
+4. The plan separates read-only steps from approval-required and blocked actions.
+5. The approval gate prepares a human review packet.
+6. Audit records or audit previews capture the run, decision boundary, and proposed tool actions.
 
 ## Integration Boundary
 
@@ -34,5 +37,8 @@ Proposed future adapter boundaries:
 - `slack-approval-adapter`: drafts approval messages and waits for human decision.
 - `github-followup-adapter`: creates issues after approval.
 - `llm-provider-adapter`: calls approved model providers with redaction and audit capture.
+- `postgres-audit-store`: writes standard Postgres audit records through `DATABASE_URL`.
 
 No adapter should bypass the approval gate.
+
+See `docs/database-portability.md` for the Neon evaluation path and AWS RDS production migration target.

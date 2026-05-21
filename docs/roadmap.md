@@ -13,6 +13,9 @@
 
 ## Phase 1: Read-Only Context
 
+- Hosted browser incident packet demo.
+- Safe Pages Function mock API.
+- Database portability docs for Neon now and AWS RDS later.
 - AWS read-only context adapter.
 - Log source adapter with redaction.
 - Incident context pack builder.
@@ -45,7 +48,7 @@
 ## Phase 5: Portfolio Demo
 
 - Seeded demo incident.
-- Screen-recordable local flow.
+- Screen-recordable hosted and local flow.
 - Architecture diagram.
 - Incident report export.
 - Documentation polish.

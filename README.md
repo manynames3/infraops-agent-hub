@@ -1,6 +1,6 @@
 # InfraOps Agent Hub
 
-[Live landing page](https://infraops-agent-hub.pages.dev/) · [Hiring manager demo guide](docs/hiring-manager-demo.md) · [Local development](docs/local-development.md) · [Real integration path](docs/real-integration-path.md)
+[Live landing page](https://infraops-agent-hub.pages.dev/) · [Hosted demo](https://infraops-agent-hub.pages.dev/demo.html) · [Hiring manager demo guide](docs/hiring-manager-demo.md) · [Local development](docs/local-development.md) · [Real integration path](docs/real-integration-path.md)
 
 InfraOps Agent Hub is a local-first MVP scaffold for an AI-assisted infrastructure operations console. It shows how alerts, logs, prompts, approval gates, runbooks, and audit records can fit together without making live AWS, Slack, GitHub, or LLM calls.
 
@@ -9,9 +9,11 @@ This repository is intentionally safe by default. Every integration is mocked, e
 ## What To Review First
 
 - [Live sales landing page](https://infraops-agent-hub.pages.dev/): buyer-facing positioning for on-call SRE and platform teams.
+- [Hosted sample incident demo](https://infraops-agent-hub.pages.dev/demo.html): browser-runnable InvoiceBridge incident packet with approval gate and audit-event preview.
 - [Importable n8n workflow](n8n/workflows/incident-triage-workflow.example.json): credential-free demo workflow with webhook, triage, approval, GitHub, Postgres, and Slack placeholders.
 - [Runnable local demo](scripts/run-local-demo.sh): reads the InvoiceBridge 5xx sample incident and writes one local Postgres audit event.
 - [Audit schema](audit-schema/postgres.sql): approval-aware incident audit model.
+- [Database portability](docs/database-portability.md): Neon for low-cost evaluation, AWS RDS for production, with one standard Postgres schema.
 - [Real integration path](docs/real-integration-path.md): least-privilege plan for AWS, GitHub, Slack, Postgres, and LLM providers.
 
 ## Demo Preview
@@ -20,7 +22,7 @@ This repository is intentionally safe by default. Every integration is mocked, e
 
 The MVP shows a safe incident path: webhook alert intake, sample context loading, mocked agent reasoning, an approval gate, and placeholder outputs for GitHub, Postgres, and Slack. It is importable into n8n without real credentials.
 
-The sales landing page is deployed at https://infraops-agent-hub.pages.dev/ and lives in `index.html`.
+The sales landing page is deployed at https://infraops-agent-hub.pages.dev/ and lives in `index.html`. The hosted demo lives in `demo.html` and generates a safe incident packet from the same sample data used by the local demo.
 
 ![local demo output](screenshots/local-demo-output.svg)
 
@@ -71,12 +73,17 @@ Not included yet:
 ```text
 .
 |-- assets/
+|   |-- demo.css
+|   |-- demo-engine.mjs
+|   |-- demo.js
 |   `-- landing.css
 |-- audit-schema/
 |   `-- postgres.sql
 |-- docs/
 |   |-- architecture.md
 |   |-- audit-logging.md
+|   |-- aws-rds-migration.md
+|   |-- database-portability.md
 |   |-- demo-script.md
 |   |-- deployment.md
 |   |-- hiring-manager-demo.md
@@ -85,6 +92,10 @@ Not included yet:
 |   |-- real-integration-path.md
 |   |-- roadmap.md
 |   `-- safety-and-approval-model.md
+|-- functions/
+|   `-- api/
+|       |-- health.js
+|       `-- run-demo-incident.js
 |-- n8n/
 |   `-- workflows/
 |       `-- incident-triage-workflow.example.json
@@ -113,9 +124,12 @@ Not included yet:
 |-- screenshots/
 |-- scripts/
 |-- config.example.env
+|-- demo.html
 |-- docker-compose.yml
+|-- favicon.svg
 |-- index.html
 |-- Makefile
+|-- package.json
 `-- README.md
 ```
 
@@ -168,6 +182,16 @@ The demo reads:
 - `runbooks/high-5xx-error-rate.md`
 
 It then produces deterministic mocked outputs for triage, release correlation, runbook lookup, next-step planning, and documentation. The script inserts one `infraops_audit.audit_events` record into local Postgres and prints the final incident summary. It refuses non-local database URLs and does not call real AWS, GitHub, Slack, or LLM APIs.
+
+Run the hosted/browser demo locally:
+
+```bash
+python3 -m http.server 8877
+```
+
+Then open http://localhost:8877/demo.html. The browser demo creates the same incident-packet and audit-event preview without requiring Docker. On Cloudflare Pages, `functions/api/run-demo-incident.js` provides the same safe mock response server-side.
+
+Hosted audit writes stay disabled by default. To test real hosted persistence, configure a Neon Postgres `DATABASE_URL`, apply `audit-schema/postgres.sql`, set `DATABASE_PROVIDER=neon`, and set `ENABLE_HOSTED_AUDIT_WRITES=true` outside the repo.
 
 Validate the scaffold:
 
@@ -237,6 +261,14 @@ The audit schema captures:
 
 See `docs/audit-logging.md` and `audit-schema/postgres.sql`.
 
+The database strategy is intentionally portable:
+
+- Neon Postgres is the recommended low-cost hosted evaluation target.
+- AWS RDS PostgreSQL is the recommended production target when private networking and AWS-native controls are required.
+- The schema remains standard Postgres behind one `DATABASE_URL`.
+
+See `docs/database-portability.md` and `docs/aws-rds-migration.md`.
+
 ## Safe Scripts
 
 All scripts use `set -euo pipefail` and are scoped to local development.
@@ -247,6 +279,7 @@ All scripts use `set -euo pipefail` and are scoped to local development.
 - `scripts/run-local-demo.sh`: Runs the InvoiceBridge 5xx mock incident demo and writes one local audit event.
 - `scripts/approval-gate.sh`: Demonstrates blocking production-impacting actions without human approval.
 - `scripts/apply-audit-schema-local.sh`: Applies the schema only to a local Postgres URL.
+- `scripts/validate-demo-engine.mjs`: Validates deterministic hosted demo packet generation.
 
 ## Roadmap
 

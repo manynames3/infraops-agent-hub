@@ -19,6 +19,7 @@
       </a>
       <nav class="nav-links" aria-label="Page sections">
         <a href="#problem">Problem</a>
+        <a href="demo.html">Demo</a>
         <a href="#how-it-works">How it works</a>
         <a href="#trust">Trust</a>
         <a href="#request-access">Request access</a>
@@ -35,7 +36,7 @@
             packet: what fired, what changed, what runbook applies, and what needs human approval.
           </p>
           <div class="hero-actions" aria-label="Primary actions">
-            <a class="button button-primary" href="#request-access">Request a triage walkthrough</a>
+            <a class="button button-primary" href="demo.html">Run sample incident</a>
             <a class="button button-secondary" href="#how-it-works">See the workflow</a>
           </div>
           <p class="product-promise">
@@ -45,7 +46,7 @@
         <figure class="hero-visual" aria-label="Mock incident workflow preview">
           <div class="hero-visual-header">
             <span>Mock incident flow</span>
-            <span>Local demo</span>
+            <span>Hosted demo</span>
           </div>
           <img src="screenshots/n8n-workflow-preview.svg" alt="Credential-free n8n demo workflow showing webhook, alert context, logs, runbook lookup, AI placeholders, approval gate, audit insert, and Slack summary">
           <figcaption>Alert context becomes an evidence-backed first-response packet before any production-impacting action can proceed.</figcaption>
@@ -102,6 +103,7 @@
           <figure class="product-figure workflow-preview">
             <div class="preview-tabs" aria-label="Workflow source options">
               <span class="preview-tab is-active">Visual workflow</span>
+              <a class="preview-tab" href="demo.html">Live demo</a>
               <a class="preview-tab" href="n8n/workflows/incident-triage-workflow.example.json">n8n JSON</a>
               <a class="preview-tab" href="docker-compose.yml">Docker Compose</a>
             </div>
@@ -155,7 +157,7 @@
           <p class="eyebrow">Evaluation workflow</p>
           <h2 id="how-title">Three steps from alert to operator handoff.</h2>
           <p>
-            The evaluation build includes a runnable local demo and an importable n8n workflow. Real cloud,
+            The evaluation build includes a hosted sample incident, a runnable local demo, and an importable n8n workflow. Real cloud,
             Slack, GitHub, and LLM calls stay disabled until least-privilege adapters and approval checks are in place.
           </p>
         </div>
@@ -163,7 +165,7 @@
           <article>
             <span class="step-number">1</span>
             <h3>Receive the incident context</h3>
-            <p>The demo starts from an InvoiceBridge 5xx alert and reads structured sample logs plus the high-5xx runbook.</p>
+            <p>The hosted demo starts from an InvoiceBridge 5xx alert and reads structured sample logs plus the high-5xx runbook.</p>
           </article>
           <article>
             <span class="step-number">2</span>
@@ -234,11 +236,11 @@
             <p class="eyebrow">Truthful trust signals</p>
             <h2 id="trust-title">Designed for cautious teams, not blind automation.</h2>
             <ul class="trust-list">
-              <li>Local-first evaluation build with Docker Compose for n8n and Postgres.</li>
+              <li>Hosted mock demo plus local-first Docker Compose evaluation path for n8n and Postgres.</li>
               <li>No real AWS, Slack, GitHub, or LLM calls in the importable workflow.</li>
               <li>No real secrets committed to the repository.</li>
               <li>Approval-required and blocked action classes are documented in runbooks and schema.</li>
-              <li>Real integration path documents least-privilege setup, redaction, and cost controls before production use.</li>
+              <li>Standard Postgres audit schema can start on Neon for evaluation and move to AWS RDS for production.</li>
             </ul>
           </div>
           <figure class="product-figure">
@@ -257,8 +259,9 @@
             There is no public billing or self-serve signup yet.
           </p>
           <div class="access-actions">
+            <a class="button button-primary" href="demo.html">Run hosted sample incident</a>
             <a
-              class="button button-primary button-github"
+              class="button button-secondary button-github"
               href="https://github.com/manynames3/infraops-agent-hub/issues/new?title=Request%20access%20to%20InfraOps%20Agent%20Hub&amp;body=Team%20size%3A%0ACloud%20stack%3A%0AIncident%20pain%20to%20solve%3A%0AWhat%20you%20want%20to%20see%20in%20a%20demo%3A"
             >
               <svg class="button-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -308,7 +311,7 @@
           </article>
           <article>
             <h3>Can it run cheaply?</h3>
-            <p>Yes for evaluation. The deployment guide recommends one small VPS or Lightsail instance before using RDS, ALB, ECS/Fargate, or OpenSearch.</p>
+            <p>Yes for evaluation. The hosted demo can run on Cloudflare Pages with standard Postgres audit storage, using Neon first and AWS RDS later when production controls justify it.</p>
           </article>
         </div>
       </section>
@@ -316,6 +319,7 @@
 
     <footer class="site-footer">
       <span>InfraOps Agent Hub</span>
+      <a href="demo.html">Run the hosted demo</a>
       <a href="README.md">Read the repository guide</a>
       <a href="docs/deployment.md">Deployment notes</a>
     </footer>

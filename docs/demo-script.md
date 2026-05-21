@@ -1,12 +1,25 @@
 # Demo Script
 
-Use this checklist to capture a clear portfolio walkthrough of the local mock demo. The goal is to show the safety boundary and product flow, not production automation.
+Use this checklist to capture a clear portfolio walkthrough of the hosted and local mock demos. The goal is to show the safety boundary and product flow, not production automation.
 
 ## Setup Shots
 
+- Landing page at https://infraops-agent-hub.pages.dev/.
+- Hosted demo at https://infraops-agent-hub.pages.dev/demo.html before running the sample incident.
 - Repository root with `README.md`, `scripts/`, `n8n/`, `runbooks/`, `sample-alerts/`, and `sample-logs/` visible.
 - `docker compose` local stack running with n8n and Postgres.
 - n8n import dialog showing `n8n/workflows/incident-triage-workflow.example.json`.
+
+## Hosted Demo Shots
+
+- Demo hero with `Run sample incident`.
+- Generated incident packet summary for the InvoiceBridge 5xx spike.
+- Metrics grid showing incident ID, service, severity, 5xx rate, sampled 5xx count, and human-review status.
+- Triage finding, release correlation, runbook match, and operator handoff cards.
+- Read-only, approval-required, and blocked next-step sections.
+- Evidence timeline.
+- Approval panel showing production actions blocked.
+- Audit JSON preview showing `infraops_audit.audit_events` shape.
 
 ## n8n Workflow Shots
 
@@ -41,9 +54,10 @@ Use this checklist to capture a clear portfolio walkthrough of the local mock de
 ## Suggested Narrative
 
 1. Show the incoming InvoiceBridge 5xx alert.
-2. Show the workflow loading sample logs and runbook placeholders.
-3. Show deterministic mock agent outputs.
-4. Show the approval gate blocking production-impacting actions.
-5. Show placeholder payloads for GitHub, Postgres, and Slack.
-6. Run the shell demo to insert one real local audit event.
-7. Close on the final incident summary and audit evidence.
+2. Run the hosted demo to show the incident packet a buyer can understand without local setup.
+3. Show the workflow loading sample logs and runbook placeholders.
+4. Show deterministic mock agent outputs.
+5. Show the approval gate blocking production-impacting actions.
+6. Show placeholder payloads for GitHub, Postgres, and Slack.
+7. Run the shell demo to insert one real local audit event.
+8. Close on the final incident summary, audit evidence, and database portability path.

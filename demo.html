@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>InfraOps Agent Hub Demo | Mock incident packet</title>
+    <meta
+      name="description"
+      content="Run a safe hosted mock incident demo for InfraOps Agent Hub and review the generated triage packet, approval gate, and audit event preview."
+    >
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/landing.css">
+    <link rel="stylesheet" href="assets/demo.css">
+    <script type="module" src="assets/demo.js"></script>
+  </head>
+  <body class="demo-body">
+    <header class="site-header" aria-label="Demo navigation">
+      <a class="brand" href="index.html" aria-label="InfraOps Agent Hub home">
+        <span class="brand-mark" aria-hidden="true">IA</span>
+        <span>InfraOps Agent Hub</span>
+      </a>
+      <nav class="nav-links" aria-label="Demo links">
+        <a href="index.html">Landing page</a>
+        <a href="docs/database-portability.md">Database path</a>
+        <a href="https://github.com/manynames3/infraops-agent-hub/issues/new?title=Request%20access%20to%20InfraOps%20Agent%20Hub&amp;body=Team%20size%3A%0ACloud%20stack%3A%0AIncident%20pain%20to%20solve%3A%0AWhat%20you%20want%20to%20see%20in%20a%20demo%3A">Request walkthrough</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="demo-hero" aria-labelledby="demo-title">
+        <div>
+          <p class="eyebrow">Hosted mock demo</p>
+          <h1 id="demo-title">Run the InvoiceBridge incident packet.</h1>
+          <p class="demo-subtitle">
+            This safe demo reads the repo's sample alert, logs, and high-5xx runbook. It generates the
+            triage packet, approval gate, handoff note, and audit-event preview without calling AWS,
+            Slack, GitHub, or an LLM.
+          </p>
+          <div class="demo-actions">
+            <button class="button button-primary" type="button" data-run-demo>Run sample incident</button>
+            <a class="button button-secondary" href="sample-alerts/invoicebridge-5xx-alert.json">View sample alert</a>
+          </div>
+        </div>
+        <aside class="demo-status-panel" data-tone="neutral" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div>
+            <strong>Demo status</strong>
+            <p data-demo-status data-tone="neutral">Ready to run in mock mode.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="demo-trust-strip" aria-label="Demo safety boundaries">
+        <span>0 external API calls</span>
+        <span>0 production changes</span>
+        <span>Human approval required</span>
+        <span>Standard Postgres audit shape</span>
+      </section>
+
+      <div class="demo-shell">
+        <div data-packet-root>
+          <section class="empty-state">
+            <p class="eyebrow">Waiting for sample incident</p>
+            <h2>The incident packet will render here.</h2>
+            <p>Use the button above to generate a deterministic mock triage packet from repository sample data.</p>
+          </section>
+        </div>
+
+        <section class="audit-section" aria-labelledby="audit-title">
+          <div data-audit-root>
+            <article class="audit-card">
+              <p class="eyebrow">Audit event</p>
+              <h2 id="audit-title">Audit preview will appear after the packet is generated.</h2>
+              <p>The hosted demo stores a local browser preview unless a server-side Postgres adapter is configured.</p>
+            </article>
+          </div>
+          <details class="json-details">
+            <summary>Audit JSON preview</summary>
+            <pre><code data-json-preview>{}</code></pre>
+          </details>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <span>InfraOps Agent Hub</span>
+      <a href="README.md">Repository guide</a>
+      <a href="docs/database-portability.md">Database portability</a>
+      <a href="docs/aws-rds-migration.md">AWS RDS migration</a>
+    </footer>
+  </body>
+</html>

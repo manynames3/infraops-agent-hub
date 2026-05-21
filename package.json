@@ -1,0 +1,31 @@
+{
+  "name": "infraops-agent-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Safe mock incident triage hub with hosted demo, n8n workflow, runbooks, and portable Postgres audit schema.",
+  "scripts": {
+    "validate": "./scripts/validate-scaffold.sh",
+    "validate:demo": "node scripts/validate-demo-engine.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manynames3/infraops-agent-hub.git"
+  },
+  "keywords": [
+    "infraops",
+    "incident-response",
+    "postgres",
+    "n8n",
+    "cloudflare-pages"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/manynames3/infraops-agent-hub/issues"
+  },
+  "homepage": "https://infraops-agent-hub.pages.dev/",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0"
+  }
+}

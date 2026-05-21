@@ -1,10 +1,35 @@
 # Low-Cost Deployment Guide
 
-This guide describes the cheapest practical deployment path for the InfraOps Agent Hub portfolio MVP. Keep it simple: one small VPS, Docker Compose, local Postgres volume, local n8n volume, HTTPS reverse proxy, and strict mock or read-only integration flags.
+This guide describes low-cost deployment paths for the InfraOps Agent Hub portfolio MVP. Keep it simple: start with the hosted static demo, then use one small VPS only when you need the full Docker Compose/n8n runtime.
 
 Do not put real credentials in this repository. Use placeholders in docs and store real values only on the server in `.env` or a secret manager.
 
-## Recommended Path
+## Cheapest Hosted Demo Path
+
+Use this first when you do not need a custom domain or always-on n8n:
+
+```text
+Cloudflare Pages
+  index.html
+  demo.html
+  functions/api/run-demo-incident.js
+
+Standard Postgres later
+  Neon for low-cost evaluation
+  AWS RDS for production
+```
+
+Why this is the current cheapest path:
+
+- No domain is required; use the `*.pages.dev` URL.
+- No VPS is required for the buyer-facing demo.
+- The hosted demo can render a full mock incident packet from repository sample data.
+- Server-side persistence can be added behind the same standard Postgres audit schema.
+- AWS RDS remains the production target when private networking and AWS-native controls matter.
+
+Use `docs/database-portability.md` before wiring hosted audit writes.
+
+## Docker Compose Path
 
 Use one small VPS:
 
@@ -18,7 +43,7 @@ Recommended starting size:
 - 40 GB or more SSD.
 - Ubuntu LTS or Debian.
 
-Start here because it keeps the monthly bill predictable and avoids managed-service sprawl. The MVP does not need RDS, a load balancer, Kubernetes, or a search cluster.
+Use this path when you need n8n running outside your laptop, local Postgres volumes, or a fuller operations demo. The MVP does not need RDS, a load balancer, Kubernetes, or a search cluster for this stage.
 
 ## Architecture
 
