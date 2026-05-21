@@ -15,7 +15,7 @@ Alert -> Triage -> Runbook Match -> Approval Gate -> Audit Record -> Human Actio
 - Workflow layer: n8n example workflow in `n8n/workflows/`.
 - Agent layer: Prompt contracts in `prompts/`.
 - Operations layer: Human runbooks in `runbooks/`.
-- Audit layer: Postgres schema in `audit-schema/postgres.sql`.
+- Audit layer: local/hosted demo Postgres schema in `audit-schema/postgres.sql`; production can use a separate AWS-native audit-store adapter when governance requirements justify it.
 - Safety layer: Approval gate policy documented in `docs/safety-and-approval-model.md`.
 
 ## Data Flow
@@ -38,6 +38,7 @@ Proposed future adapter boundaries:
 - `github-followup-adapter`: creates issues after approval.
 - `llm-provider-adapter`: calls approved model providers with redaction and audit capture.
 - `postgres-audit-store`: writes standard Postgres audit records through `DATABASE_URL`.
+- `aws-native-audit-store`: future production adapter for DynamoDB/S3/EventBridge-style audit storage when AWS governance matters more than demo Postgres portability.
 
 No adapter should bypass the approval gate.
 

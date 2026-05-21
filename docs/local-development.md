@@ -80,6 +80,28 @@ The demo reads the InvoiceBridge 5xx alert, sample logs, and high-5xx runbook. I
 
 The browser-hosted demo and local CLI demo intentionally share the same incident scenario. The CLI path proves local Postgres writes; the browser path proves the buyer-facing incident packet experience.
 
+## Optional Neon Hosted Demo Database
+
+Local development should continue to use Docker Compose Postgres. Neon is only for hosted demos that need persistent audit or workflow data.
+
+For a hosted demo:
+
+1. Create a Neon project.
+2. Apply `audit-schema/postgres.sql` with `psql "$DATABASE_URL" -f audit-schema/postgres.sql`.
+3. Set hosted environment variables outside Git:
+
+   ```text
+   DATABASE_PROVIDER=neon
+   DATABASE_URL=postgresql://<user>:<password>@<project>-pooler.<region>.aws.neon.tech/<database>?sslmode=require&channel_binding=require
+   DATABASE_SSL_MODE=require
+   ENABLE_HOSTED_AUDIT_WRITES=true
+   ```
+
+4. Run `POST /api/run-demo-incident`.
+5. Confirm the response reports `persistence.inserted=true`.
+
+Keep production-impacting actions blocked even when hosted audit writes are enabled.
+
 ## Apply Local Audit Schema
 
 Start Postgres, then run:

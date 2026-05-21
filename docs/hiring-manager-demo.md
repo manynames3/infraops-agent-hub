@@ -67,7 +67,7 @@ Screenshots to capture:
 
 1:40-2:00:
 
-"The production path is documented but intentionally not overbuilt. Neon is the low-cost hosted Postgres target for evaluation, while AWS RDS is the production target when private networking and AWS-native controls matter. The next technical step is read-only CloudWatch and GitHub adapters, Slack approval messages, and an LLM adapter with redaction and schema validation."
+"The production path is documented but intentionally not overbuilt. Neon is optional for low-cost hosted demo persistence, while AWS RDS or AWS-native storage is the production path when private networking, IAM integration, compliance posture, and operational controls matter. The next technical step is read-only CloudWatch and GitHub adapters, Slack approval messages, and an LLM adapter with redaction and schema validation."
 
 ## Architecture Explanation
 
@@ -134,7 +134,7 @@ Key files:
 - `runbooks/high-5xx-error-rate.md`: Human-readable operations guidance.
 - `prompts/`: Future LLM behavior contracts.
 - `docs/real-integration-path.md`: Path from mock adapters to real integrations.
-- `docs/database-portability.md`: Neon now, RDS later, with standard Postgres in both cases.
+- `docs/database-portability.md`: local Postgres for development, optional Neon for hosted demos, and AWS-native persistence when production governance requires it.
 - `docs/deployment.md`: Low-cost deployment plan.
 
 ## What This Project Proves Technically
@@ -192,7 +192,7 @@ Use or adapt these depending on the role:
 - Created an importable credential-free n8n workflow demonstrating webhook alert ingestion, mock agent triage, release correlation, runbook lookup, approval gates, and placeholder GitHub, Slack, and Postgres integrations.
 - Implemented a deterministic local demo script that reads sample alerts/logs/runbooks, generates mocked agent outputs, inserts an audit event into Postgres, and prints an operator-ready incident summary.
 - Built a hosted incident packet demo that renders triage, release correlation, runbook lookup, approval-gated next steps, and audit-event preview from repository sample data.
-- Documented a least-privilege productionization path for AWS CloudWatch, GitHub, Slack, Postgres, LLM providers, approval enforcement, Neon evaluation storage, and AWS RDS production migration.
+- Documented a least-privilege productionization path for AWS CloudWatch, GitHub, Slack, Postgres, LLM providers, approval enforcement, optional Neon demo storage, and AWS-native production persistence.
 
 ## Interview Talking Points
 
@@ -233,7 +233,7 @@ Technical depth:
 6. Point out the final summary and audit record ID.
 7. Open `audit-schema/postgres.sql` and explain the audit model.
 8. Open n8n and show the importable workflow.
-9. Open `docs/database-portability.md` and explain Neon now, RDS later.
+9. Open `docs/database-portability.md` and explain local Postgres for development, optional Neon for hosted demo persistence, and AWS-native persistence for governance-heavy production.
 10. Open `docs/real-integration-path.md` and explain how real integrations would be added safely.
 
 ## Next Steps To Productionize
@@ -288,7 +288,7 @@ Why local Postgres?
 
 Why Neon before AWS RDS?
 
-- Neon is better for a cheap hosted evaluation demo. AWS RDS is better once production buyers require private networking, AWS-native controls, and stronger operational guarantees.
+- Neon is better for a cheap hosted evaluation demo that needs persistent Postgres data. AWS RDS or AWS-native storage is better once production buyers require private networking, IAM integration, compliance posture, and stronger operational guarantees.
 
 Why not use AWS managed services immediately?
 

@@ -15,8 +15,8 @@ Cloudflare Pages
   functions/api/run-demo-incident.js
 
 Standard Postgres later
-  Neon for low-cost evaluation
-  AWS RDS for production
+  Neon for optional low-cost hosted demo persistence
+  AWS RDS or AWS-native storage for production/governance
 ```
 
 Why this is the current cheapest path:
@@ -25,9 +25,19 @@ Why this is the current cheapest path:
 - No VPS is required for the buyer-facing demo.
 - The hosted demo can render a full mock incident packet from repository sample data.
 - Server-side persistence can be added behind the same standard Postgres audit schema.
-- AWS RDS remains the production target when private networking and AWS-native controls matter.
+- Neon is optional when the hosted demo needs persistent audit or workflow data without always-on database cost.
+- AWS RDS or AWS-native storage remains the production/governance path when private networking, IAM integration, compliance posture, and operational controls matter.
 
 Use `docs/database-portability.md` before wiring hosted audit writes.
+
+Hosted Neon setup summary:
+
+1. Create a Neon project and database.
+2. Apply `audit-schema/postgres.sql` with `psql "$DATABASE_URL" -f audit-schema/postgres.sql`.
+3. In Cloudflare Pages, set `DATABASE_PROVIDER=neon`.
+4. Set `DATABASE_URL` to Neon's pooled connection string with `sslmode=require`.
+5. Set `DATABASE_SSL_MODE=require`.
+6. Set `ENABLE_HOSTED_AUDIT_WRITES=true` only after the schema is initialized.
 
 ## Docker Compose Path
 

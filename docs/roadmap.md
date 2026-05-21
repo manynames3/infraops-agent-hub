@@ -15,7 +15,7 @@
 
 - Hosted browser incident packet demo.
 - Safe Pages Function mock API.
-- Database portability docs for Neon now and AWS RDS later.
+- Database portability docs for local Postgres development, optional Neon hosted demo persistence, and AWS-native production governance storage.
 - AWS read-only context adapter.
 - Log source adapter with redaction.
 - Incident context pack builder.

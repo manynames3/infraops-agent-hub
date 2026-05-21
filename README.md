@@ -191,7 +191,7 @@ python3 -m http.server 8877
 
 Then open http://localhost:8877/demo.html. The browser demo creates the same incident-packet and audit-event preview without requiring Docker. On Cloudflare Pages, `functions/api/run-demo-incident.js` provides the same safe mock response server-side.
 
-Hosted audit writes stay disabled by default. To test real hosted persistence, configure a Neon Postgres `DATABASE_URL`, apply `audit-schema/postgres.sql`, set `DATABASE_PROVIDER=neon`, and set `ENABLE_HOSTED_AUDIT_WRITES=true` outside the repo.
+Hosted audit writes stay disabled by default. To test real hosted persistence, configure a Neon Postgres `DATABASE_URL` with `sslmode=require`, apply `audit-schema/postgres.sql`, set `DATABASE_PROVIDER=neon`, and set `ENABLE_HOSTED_AUDIT_WRITES=true` outside the repo.
 
 Validate the scaffold:
 
@@ -263,9 +263,10 @@ See `docs/audit-logging.md` and `audit-schema/postgres.sql`.
 
 The database strategy is intentionally portable:
 
-- Neon Postgres is the recommended low-cost hosted evaluation target.
-- AWS RDS PostgreSQL is the recommended production target when private networking and AWS-native controls are required.
-- The schema remains standard Postgres behind one `DATABASE_URL`.
+- Local Docker Postgres is the default development target.
+- Neon Postgres is optional for hosted demos that need persistent Postgres-backed audit data without always-on database cost.
+- AWS RDS or AWS-native storage may be preferred for production governance workloads when private networking, IAM integration, compliance posture, and operational controls matter more than demo idling cost.
+- The hosted demo's Postgres path remains behind one `DATABASE_URL`.
 
 See `docs/database-portability.md` and `docs/aws-rds-migration.md`.
 

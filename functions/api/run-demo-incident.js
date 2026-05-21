@@ -47,6 +47,15 @@ async function loadDemoSources(context) {
   };
 }
 
+function neonUrlRequiresSsl(databaseUrl) {
+  try {
+    const url = new URL(databaseUrl);
+    return url.searchParams.get("sslmode") === "require";
+  } catch {
+    return false;
+  }
+}
+
 async function persistAuditEvent(env, auditEvent) {
   if (env?.ENABLE_HOSTED_AUDIT_WRITES !== "true") {
     return {
@@ -71,6 +80,14 @@ async function persistAuditEvent(env, auditEvent) {
       mode: "postgres-provider-not-enabled",
       message:
         "Hosted Pages Functions currently support the Neon serverless Postgres adapter. Use AWS RDS from an AWS-hosted API or a deliberate Cloudflare Hyperdrive design."
+    };
+  }
+
+  if (!neonUrlRequiresSsl(env.DATABASE_URL)) {
+    return {
+      inserted: false,
+      mode: "neon-ssl-required",
+      message: "Neon hosted audit writes require DATABASE_URL to include sslmode=require."
     };
   }
 
