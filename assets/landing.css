@@ -543,7 +543,9 @@ code {
 .objection-list article,
 .panel-grid article,
 .case-grid article,
-.trust-band article {
+.trust-band article,
+.benefit-grid article,
+.faq-grid article {
   padding: 24px;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -557,7 +559,8 @@ code {
 }
 
 .workflow-list span,
-.trust-band span {
+.trust-band span,
+.benefit-grid span {
   color: var(--green);
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 12px;
@@ -586,7 +589,7 @@ code {
 
 .panel-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-top: 36px;
 }
@@ -597,6 +600,36 @@ code {
 
 .section-heading {
   max-width: 980px;
+  margin-bottom: 44px;
+}
+
+.benefits {
+  background: #000000;
+}
+
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.benefit-grid article {
+  min-height: 250px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015)),
+    #0b0d0e;
+}
+
+.benefit-grid article:nth-child(-n + 3) {
+  grid-column: span 2;
+}
+
+.benefit-grid article:nth-child(n + 4) {
+  grid-column: span 3;
+}
+
+.benefit-grid span {
+  display: block;
   margin-bottom: 44px;
 }
 
@@ -663,6 +696,26 @@ code {
   margin-bottom: 46px;
 }
 
+.faq {
+  background: #080909;
+}
+
+.faq .section-heading {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.faq-grid article {
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .final-cta {
   padding: clamp(94px, 13vw, 174px) clamp(24px, 6vw, 90px);
   text-align: center;
@@ -715,13 +768,20 @@ code {
   }
 
   .signal-row,
-  .case-grid {
+  .case-grid,
+  .benefit-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .benefit-grid article:nth-child(-n + 3),
+  .benefit-grid article:nth-child(n + 4) {
+    grid-column: auto;
   }
 
   .split-section,
   .trust-band,
-  .panel-grid {
+  .panel-grid,
+  .faq-grid {
     grid-template-columns: 1fr;
   }
 
@@ -784,6 +844,8 @@ code {
 
   .signal-row,
   .case-grid,
+  .benefit-grid,
+  .faq-grid,
   .packet-grid {
     grid-template-columns: 1fr;
   }

@@ -22,10 +22,11 @@
         <span>InfraOps Agent Hub</span>
       </a>
       <nav class="nav-links" aria-label="Page sections">
+        <a href="#problem">Problem</a>
         <a href="#workflow">Workflow</a>
-        <a href="#proof">Proof</a>
+        <a href="#benefits">Benefits</a>
         <a href="#use-cases">Use cases</a>
-        <a href="#trust">Trust</a>
+        <a href="#faq">FAQ</a>
       </nav>
       <a class="nav-login" href="README.md">Docs</a>
       <a class="nav-cta" href="demo.html">Run demo</a>
@@ -46,30 +47,30 @@
 
         <div class="hero-inner">
           <p class="eyebrow">For on-call SRE and platform teams</p>
-          <h1 id="hero-title">First-response packets for cloud incidents.</h1>
+          <h1 id="hero-title">Stop losing incident time to context hunting.</h1>
           <p class="hero-subtitle">
-            When a 5xx alert fires, InfraOps Agent Hub pulls the alert, sampled logs, runbook guidance,
-            release context, approval state, and audit evidence into one safe operator handoff.
+            InfraOps Agent Hub turns cloud alerts, logs, release context, and runbooks into a first-response
+            packet: what fired, what changed, what runbook applies, and what needs human approval.
           </p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button button-primary" href="demo.html">Run sample incident</a>
-            <a class="button button-secondary" href="#workflow">Read the workflow</a>
+            <a class="button button-secondary" href="#workflow">See the workflow</a>
           </div>
         </div>
 
         <div class="signal-row" aria-label="Evaluation boundaries">
-          <span>0 external API calls</span>
-          <span>No production actions</span>
-          <span>Human approval required</span>
-          <span>Postgres audit shape</span>
-          <span>Optional Neon demo DB</span>
+          <span>Alert, logs, runbook</span>
+          <span>Release correlation</span>
+          <span>Human approval gate</span>
+          <span>Postgres audit trail</span>
+          <span>Mock mode first</span>
         </div>
       </section>
 
       <section class="statement" aria-labelledby="statement-title">
         <h2 id="statement-title">
-          Bring incident context into one response path.
-          <span>Keep risky actions behind approval.</span>
+          A 5xx alert should not become a Slack scavenger hunt.
+          <span>Give responders one packet they can trust.</span>
         </h2>
       </section>
 
@@ -98,58 +99,96 @@
         </div>
       </section>
 
-      <section class="section split-section" id="workflow" aria-labelledby="workflow-title">
-        <div>
-          <p class="eyebrow">The actual workflow</p>
-          <h2 id="workflow-title">From noisy alert to approved next step.</h2>
-        </div>
-        <div class="workflow-list">
+      <section class="section dark-panel" id="problem" aria-labelledby="problem-title">
+        <p class="eyebrow">The incident handoff problem</p>
+        <h2 id="problem-title">The first 10 minutes are usually lost to context hunting.</h2>
+        <div class="panel-grid">
           <article>
-            <span>01</span>
-            <h3>Start with the alert</h3>
-            <p>The demo reads the InvoiceBridge 5xx alert and creates a single incident context.</p>
+            <h3>Alert fires</h3>
+            <p>The signal is noisy, severity is uncertain, and customer impact is still unclear.</p>
           </article>
           <article>
-            <span>02</span>
-            <h3>Attach evidence</h3>
-            <p>Sampled logs, release timing, and the high-5xx runbook are pulled into the same packet.</p>
+            <h3>Context splits</h3>
+            <p>One person checks logs, another checks releases, and runbook guidance sits in a different place.</p>
           </article>
           <article>
-            <span>03</span>
-            <h3>Separate safe from risky</h3>
-            <p>Read-only diagnostics are allowed. Rollback, restart, scale, and config changes require approval.</p>
+            <h3>Risk rises</h3>
+            <p>Rollback, restart, scale, and config-change ideas appear before evidence and approval are captured.</p>
           </article>
           <article>
-            <span>04</span>
-            <h3>Write the record</h3>
-            <p>The local demo inserts one structured audit event into Postgres for later review.</p>
+            <h3>Documentation lags</h3>
+            <p>The audit trail gets reconstructed later from Slack threads, terminal history, and memory.</p>
           </article>
         </div>
       </section>
 
-      <section class="section dark-panel" aria-labelledby="problem-title">
-        <p class="eyebrow">The incident problem</p>
-        <h2 id="problem-title">The first 10 minutes are usually lost to context hunting.</h2>
-        <div class="panel-grid">
+      <section class="section split-section" id="workflow" aria-labelledby="workflow-title">
+        <div>
+          <p class="eyebrow">What changes</p>
+          <h2 id="workflow-title">Three steps from alert to operator handoff.</h2>
+        </div>
+        <div class="workflow-list">
           <article>
-            <h3>Alert dashboards do not tell the whole story</h3>
-            <p>Severity, route scope, customer impact, and recent changes still need to be proven under pressure.</p>
+            <span>01</span>
+            <h3>Receive the incident context</h3>
+            <p>A webhook or sample payload becomes one incident context instead of another loose alert in a queue.</p>
           </article>
           <article>
-            <h3>Runbooks show up too late</h3>
-            <p>Teams start debating fixes before the approved diagnostic path is visible to everyone.</p>
+            <span>02</span>
+            <h3>Attach evidence</h3>
+            <p>Logs, release timing, and runbook guidance are gathered into the same packet before recommendations appear.</p>
           </article>
           <article>
-            <h3>Audit notes are reconstructed after the fact</h3>
-            <p>Slack threads, terminal history, and memory become the source of truth when the incident is already over.</p>
+            <span>03</span>
+            <h3>Gate action and preserve evidence</h3>
+            <p>Read-only checks stay separate from approval-required actions, and the audit trail is written while context is fresh.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Hand off cleanly</h3>
+            <p>The next responder gets facts, runbook match, recommended next step, approval state, and documentation in one place.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section benefits" id="benefits" aria-labelledby="benefits-title">
+        <div class="section-heading">
+          <p class="eyebrow">Operational outcomes</p>
+          <h2 id="benefits-title">Less chaos during incidents. Better proof afterward.</h2>
+        </div>
+        <div class="benefit-grid">
+          <article>
+            <span>During the incident</span>
+            <h3>Cut triage drift</h3>
+            <p>Keep alert facts, sampled logs, release correlation, and runbook matches together so responders argue less about what happened.</p>
+          </article>
+          <article>
+            <span>During the incident</span>
+            <h3>Reduce unsafe automation</h3>
+            <p>Classify actions as read-only, approval-required, or blocked before anyone treats a recommendation like a command.</p>
+          </article>
+          <article>
+            <span>During the incident</span>
+            <h3>Protect runbook discipline</h3>
+            <p>Ground next steps in approved runbooks and make unsupported actions visible before they become production changes.</p>
+          </article>
+          <article>
+            <span>Post-incident</span>
+            <h3>Improve handoffs</h3>
+            <p>Give the next engineer a short, evidence-backed incident summary instead of a long Slack thread.</p>
+          </article>
+          <article>
+            <span>Post-incident</span>
+            <h3>Make audits easier</h3>
+            <p>Write incident evidence, recommended actions, and approval state into Postgres while the incident is still fresh.</p>
           </article>
         </div>
       </section>
 
       <section class="section use-cases" id="use-cases" aria-labelledby="use-title">
         <div class="section-heading">
-          <p class="eyebrow">Where this is monetizable</p>
-          <h2 id="use-title">Cloud incidents where an unsafe recommendation costs more than slow triage.</h2>
+          <p class="eyebrow">Concrete starting points</p>
+          <h2 id="use-title">Built around incidents platform teams already handle.</h2>
         </div>
         <div class="case-grid">
           <article>
@@ -220,6 +259,39 @@
         </div>
       </section>
 
+      <section class="section faq" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Before this touches your incident workflow.</h2>
+        </div>
+        <div class="faq-grid">
+          <article>
+            <h3>Who is this for?</h3>
+            <p>On-call SRE, platform, DevOps, and infrastructure teams that handle cloud incidents and need a safer AI-assisted triage loop.</p>
+          </article>
+          <article>
+            <h3>How is this different from generic AI tools?</h3>
+            <p>It is built around incident evidence, runbooks, approval gates, and audit records instead of open-ended chat.</p>
+          </article>
+          <article>
+            <h3>What setup is required?</h3>
+            <p>The evaluation build runs locally with Docker Compose. The included n8n workflow imports without credentials.</p>
+          </article>
+          <article>
+            <h3>Is my data safe?</h3>
+            <p>The demo uses local sample data only. The production path calls for server-side secrets, redaction, least privilege, and audit writes before external side effects.</p>
+          </article>
+          <article>
+            <h3>What happens after I request access?</h3>
+            <p>The current flow opens a GitHub issue for a walkthrough request. A private intake form and in-app signup are not implemented yet.</p>
+          </article>
+          <article>
+            <h3>What does this not do yet?</h3>
+            <p>It does not call real cloud APIs, send Slack messages, create GitHub issues, run LLM inference, or execute production remediation.</p>
+          </article>
+        </div>
+      </section>
+
       <section class="final-cta" aria-labelledby="final-title">
         <p class="eyebrow">Private evaluation</p>
         <h2 id="final-title">Run the packet before trusting the automation.</h2>
@@ -233,7 +305,7 @@
             class="button button-secondary"
             href="https://github.com/manynames3/infraops-agent-hub/issues/new?title=Request%20access%20to%20InfraOps%20Agent%20Hub&amp;body=Team%20size%3A%0ACloud%20stack%3A%0AIncident%20pain%20to%20solve%3A%0AWhat%20you%20want%20to%20see%20in%20a%20demo%3A"
           >
-            Request walkthrough
+            Open Walkthrough Request on GitHub
           </a>
         </div>
         <p class="fine-print">This currently opens a prefilled GitHub issue. Do not include secrets or private incident data.</p>
